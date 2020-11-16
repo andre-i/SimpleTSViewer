@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="header_text_size">24sp</dimen>
+    <dimen name="value_text_size">20sp</dimen>
+    <dimen name="label_text_size">18sp</dimen>
+    <dimen name="button_text_size">22sp</dimen>
+    <dimen name="horisontal_line_height">6dp</dimen>
+    <dimen name="List_margin_top">12dp</dimen>
+    <dimen name="list_margin">8dp</dimen>
+    <dimen name="list_padding">6dp</dimen>
+    <dimen name="text_edit_margin_start">6dp</dimen>
+    <dimen name="button_margin_horisontal">4dp</dimen>
+    <dimen name="list_corner_radius">18dp</dimen>
+    <dimen name="list_padding_bottom">12dp</dimen>
+    <dimen name="list_margin_bottom">10dp</dimen>
+    <dimen name="small_padding">3dp</dimen>
+</resources>

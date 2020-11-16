@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/ShowChannelFragment">
+
+<!--   on top  -->
+    <action
+        android:id="@+id/action_to_Channels"
+        app:destination="@+id/ShowChannelFragment" />
+
+    <action
+        android:id="@+id/action_to_Help"
+        app:destination="@+id/HelpFragment" />
+
+
+<!--   FRAGMENTS   -->
+
+    <fragment
+        android:id="@+id/ShowChannelFragment"
+        android:name="com.bezwolos.simplets.show.channels.ShowChannelsFragment"
+        android:label="Show_Fields"
+        tools:layout="@layout/fragment_show_channel">
+
+        <action
+            android:id="@+id/action_Channel_to_Fields"
+            app:destination="@+id/FieldsFragment" />
+        <action
+            android:id="@+id/action_to_Props"
+            app:destination="@+id/PropsChannelFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/HelpFragment"
+        android:name="com.bezwolos.simplets.help.HelpFragment"
+        android:label="@string/help"
+        tools:layout="@layout/fragment_help">
+
+        <action
+            android:id="@+id/action_to_Props"
+            app:destination="@+id/PropsChannelFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FieldsFragment"
+        android:name="com.bezwolos.simplets.show.fields.FieldsFragment"
+        android:label="Fields"
+        tools:layout="@layout/fragment_fields">
+
+        <action
+            android:id="@+id/action_Fields_to_Channels"
+            app:destination="@+id/ShowChannelFragment" />
+
+        <action
+            android:id="@+id/action_to_Props"
+            app:destination="@+id/PropsChannelFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PropsChannelFragment"
+        android:name="com.bezwolos.simplets.show.create.PropsChannelFragment"
+        android:label="show properties of channel"
+        tools:layout="@layout/fragment_props_channel">
+
+        <action
+            android:id="@+id/action_PropsChannel_to_Channels"
+            app:destination="@+id/ShowChannelFragment" />
+    </fragment>
+
+
+</navigation>

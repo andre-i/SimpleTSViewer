@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">SimpleTS</string>
+    <!--       -->
+    <string name="help">Show help</string>
+    <string name="help_content">For add the new channel from Thingspeak site you must tap on menu and choose \"Add channel \" item.\nAfter it be show the screen for add channel. Simple go on.</string>
+    <!--  channels  -->
+    <string name="channel_id_label" translatable="false">"  ID: "</string>
+    <string name="channels">Channels</string>
+    <string name="add_channel">Add channel</string>
+    <string name="name">"Name: "</string>
+    <string name="channel_fields_header">Bottom show fields for this channel</string>
+    <string name="channel_edit_butt_text">Edit</string>
+    <string name="channel_del_butt_text">Delete</string>
+    <string name="channel_show_butt_text">Show</string>
+    <string name="set_channel_name">channel name</string>
+    <string name="set_channel_hint">Set channel name</string>
+    <string name="enter_channel_id">Enter channel Id</string>
+    <!--  field  -->
+    <string name="field_name_hint">set name</string>
+    <string name="field_measure_label">MeasureUnit</string>
+    <!--   label  -->
+    <string name="is_show_label">whether show</string>
+    <string name="ok_label">OK</string>
+    <string name="no_label">NO</string>
+    <string name="cancel_label">CANCEL</string>
+    <!-- misk  -->
+    <string name="must_digit">only digits allowed</string>
+    <string name="fail_write_mess">"Fail save value "</string>
+    <string name="save_it">Save it ?</string>
+
+    <!--    quest message -->
+    <string name="quest_mess_header" translatable="false">@string/is_show_label<br />
+        <big>Id: <u>%1$d</u>  @string/name<u>%2$s</u></big>
+    </string>
+    <string name="quest_mess_item" translatable="false">
+        <![CDATA[
+        <h3 align=\"center\" color=\"#4080ff\"> %1$s </h3>
+        <div color=\"#10a890\">
+            ]]>@/string/name<![CDATA[ :  %2$s <br>
+            ]]>@/string/field_measure_label<![CDATA[ : %3$s <br>
+            ]]>@string/is_show_label<![CDATA[ - %4$s <br>
+        </div>
+        ]]>
+    </string>
+
+    <!--  app  titles  -->
+    <string name="channels_fragment_title">SimpleTS : Channels list</string>
+    <string name="props_fragment_title">Tune channel %1$s</string>
+    <string name="fields_fragment_title">Show channel : %1$s</string>
+    <string name="help_fragment_title">SimpleTS : Help</string>
+
+
+    <!--   for test -->
+    <string name="dummy" translatable="false"><i>Dummy Text@string/name</i></string>
+    <!--   confirm mess -->
+    <string name="delete_channel_confirm_message">You want delete channel %1$s</string>
+    <string name="save_channel_confirm">Save channel ?</string>
+    <string name="on_delete_channel_confirm">You want delete channel %1$s</string>
+    <!--  connect wrongs  -->
+    <string name="wrong_networking_message">Can`t get data from Thingspeak \\ncheck Network and retry</string>
+    <string name="wrong_request_to_thingspeak">bad channel Id . Check channel parameters and retry</string>
+    <string name="wrong_data_format">Can`t parse data from server. \\nCheck channel parameters</string>
+    <string name="wrong_get_data_header">Error on get data</string>
+    <string name="delete_channel_header">On delete channel</string>
+</resources>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/show_fields_fragment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
+</LinearLayout>
+-->
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginStart="@dimen/list_margin"
+    android:layout_marginTop="@dimen/List_margin_top"
+    android:layout_marginEnd="@dimen/list_margin"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/list_rounded_background_light"
+    android:padding="@dimen/list_padding"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/small_padding">
+
+        <TextView
+            android:id="@+id/channel_id_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/channel_id_label"
+            android:textSize="@dimen/label_text_size" />
+
+        <TextView
+            android:id="@+id/channel_id_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_edit_margin_start"
+            android:layout_span="3"
+            android:layout_weight="1"
+            android:textSize="@dimen/label_text_size" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:padding="@dimen/small_padding">
+
+        <TextView
+            android:id="@+id/hannel_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="@dimen/label_text_size" />
+
+        <TextView
+            android:id="@+id/channel_name_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_edit_margin_start"
+            android:layout_span="3"
+            android:layout_weight="1"
+            android:textSize="@dimen/label_text_size" />
+
+    </TableRow>
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_horizontal|end"
+        android:padding="@dimen/small_padding">
+
+
+        <CheckBox
+            android:id="@+id/channel_is_checked_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:duplicateParentState="false"
+            android:editable="false"
+            android:enabled="false" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
+
+        <TextView
+            android:id="@+id/button_show_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/button_margin_horisontal"
+            android:layout_marginEnd="@dimen/button_margin_horisontal"
+            android:background="@drawable/button_rounded_simple"
+            android:gravity="center_horizontal"
+            android:padding="3dp"
+            android:paddingStart="@dimen/button_margin_horisontal"
+            android:paddingEnd="@dimen/button_margin_horisontal"
+            android:text="@string/channel_show_butt_text" />
+
+        <TextView
+            android:id="@+id/button_edit_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="@dimen/button_margin_horisontal"
+            android:layout_marginEnd="@dimen/button_margin_horisontal"
+            android:background="@drawable/button_rounded_simple"
+            android:padding="3dp"
+            android:paddingStart="@dimen/button_margin_horisontal"
+            android:paddingEnd="@dimen/button_margin_horisontal"
+            android:text="@string/channel_edit_butt_text" />
+
+        <TextView
+            android:id="@+id/button_del_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/button_margin_horisontal"
+            android:layout_marginEnd="@dimen/button_margin_horisontal"
+            android:background="@drawable/button_rounded_warning"
+            android:gravity="end"
+            android:padding="3dp"
+            android:paddingStart="@dimen/button_margin_horisontal"
+            android:paddingEnd="@dimen/button_margin_horisontal"
+            android:text="@string/channel_del_butt_text" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horisontal_line_height"
+            android:layout_margin="@dimen/list_margin"
+            android:layout_span="4"
+            android:layout_weight="1"
+            android:background="?android:attr/listDivider" />
+    </TableRow>
+
+</TableLayout>
+
+
+

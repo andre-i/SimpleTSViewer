@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SimpleTS</string>
+    <string name="channels">Каналы</string>
+    <string name="add_channel">Добавить канал</string>
+    <string name="help">Показать справку</string>
+    <string name="help_content">Чтобы добавить новый канал выберите пункт меню \"добавить канал\" и выполняйте указанные действия.</string>
+    <string name="name">"Имя:  "</string>
+    <string name="channel_fields_header">Список полей канала</string>
+    <string name="channel_del_butt_text">Удалить</string>
+    <string name="channel_show_butt_text">Показать</string>
+    <string name="channel_edit_butt_text">Настроить</string>
+    <string name="set_channel_name">имя канала</string>
+    <string name="set_channel_hint">имя для канала?</string>
+    <string name="field_name_hint">задать имя</string>
+    <string name="field_measure_label">Единицы измерения</string>
+    <string name="is_show_label">Показывать ?</string>
+    <string name="enter_channel_id">Введите ID канала</string>
+    <string name="ok_label">ДА</string>
+    <string name="no_label">НЕТ</string>
+    <string name="cancel_label">СБРОС</string>
+    <string name="must_digit">состоит из цифр</string>
+    <string name="fail_write_mess">Ошибка! Значение не сохранено!!!</string>
+    <string name="save_it">Сохранить ?</string>
+    <string name="channels_fragment_title">SimpleTS : Каналы</string>
+    <string name="props_fragment_title">Настроить канал %1$s</string>
+    <string name="fields_fragment_title">Просмотр канала : %1$s</string>
+    <string name="help_fragment_title">SimpleTS : Справка</string>
+    <string name="delete_channel_confirm_message">Удалить канал %1$s</string>
+    <string name="save_channel_confirm">Применить изменения ?</string>
+    <string name="on_delete_channel_confirm">Удалить канал %1$s</string>
+    <string name="wrong_networking_message">"Ошибка интернет соединения. \\n Проверьте соединение "</string>
+    <string name="wrong_request_to_thingspeak">Сервер не смог найти данные для канала. Проверьте существования канала и попробуйте ещё</string>
+    <string name="wrong_data_format">Непонятный формат данных. Вероятно проблемы с параметрами канала. Проверьте их.</string>
+    <string name="delete_channel_header">Подтвердите удаление канала</string>
+    <string name="wrong_get_data_header">Ошибка получения данных</string>
+</resources>
