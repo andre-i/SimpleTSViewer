@@ -14,6 +14,9 @@
         android:id="@+id/action_to_Help"
         app:destination="@+id/HelpFragment" />
 
+    <action
+        android:id="@+id/action_to_Fields"
+        app:destination="@+id/FieldsFragment" />
 
 <!--   FRAGMENTS   -->
 

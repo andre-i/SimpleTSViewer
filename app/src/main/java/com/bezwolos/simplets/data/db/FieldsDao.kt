@@ -4,7 +4,7 @@ import androidx.room.*
 import com.bezwolos.simplets.data.Field
 
 @Dao
-interface FieldsDao {
+internal interface FieldsDao {
 
     @Insert
     fun insertField( field : Field)

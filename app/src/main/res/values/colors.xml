@@ -3,10 +3,10 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="list_background_color">#88b6e1</color>
+    <color name="list_background_color">#98c6f1</color>
     <color name="horisontal_line_color">#7672a0</color>
-    <color name="simple_button_color">#a0d0dd</color>
+    <color name="simple_button_color">#3080ff</color>
     <color name="warning_button_color">#fad0eE</color>
-    <color name="list_light_background">#c0e6fc</color>
+    <color name="list_light_background">#effaff</color>
     <color name="field_foreground">#143C63</color>
 </resources>

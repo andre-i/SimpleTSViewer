@@ -8,7 +8,7 @@ import com.bezwolos.simplets.data.Channel
 import com.bezwolos.simplets.data.Field
 
 @Database(entities = [Channel::class , Field::class], version = 1, exportSchema = false)
-abstract class DatabaseSimpleTS : RoomDatabase() {
+internal abstract class DatabaseSimpleTS : RoomDatabase() {
 
     abstract val channelsDao: ChannelsDao
     abstract val fieldsDao: FieldsDao

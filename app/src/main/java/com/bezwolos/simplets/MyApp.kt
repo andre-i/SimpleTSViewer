@@ -12,16 +12,16 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MyApp : Application() {
+internal class MyApp : Application() {
 
-    lateinit var instance : MyApp
+    lateinit var instance: MyApp
 
     //  DataBase
-    private lateinit var database : DatabaseSimpleTS
-    private var DB : DatabaseSimpleTS? = null
+    private lateinit var database: DatabaseSimpleTS
+    private var DB: DatabaseSimpleTS? = null
 
     // DataHandle (data base + network
-    private lateinit var dataHandler : DataHandler
+    private lateinit var dataHandler: DataHandler
 
 
     override fun onCreate() {
@@ -38,8 +38,8 @@ class MyApp : Application() {
 
     /* ================================  own fun ================================================  */
 
-    fun getDataBase() : DatabaseSimpleTS{
-        if(DB == null) {
+    fun getDataBase(): DatabaseSimpleTS {
+        if (DB == null) {
             DB = Room.databaseBuilder<DatabaseSimpleTS>(
                 this,
                 DatabaseSimpleTS::class.java,
@@ -51,29 +51,29 @@ class MyApp : Application() {
         return database
     }
 
-    fun getDataHandler(): DataHandler{
+    fun getDataHandler(): DataHandler {
         return dataHandler
     }
 
     /*
       populate start array 0f Channel
      */
-    private fun populateChannels(){
-        GlobalScope.launch(Dispatchers.IO){
+    private fun populateChannels() {
+        GlobalScope.launch(Dispatchers.IO) {
             dataHandler.refreshChannelsFromDB()
         }
     }
 
 
-
 }
 
 /*
-      rootviewContext - context gotten from view.getRootView()
-      childEditText  - some view from rootView
-      actually - val v = some
-                 val rootContext = some.rootView.context
- */
+    min value of pause between request to site for get data
+*/
+const val MIN_PAUSE_DURATION = 15
+
+
+/*   hide KEYBOARD   */
 /*
 fun hideKeyboard( rootViewContext : Context, childEditText : View){
     val imm = rootViewContext?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -88,9 +88,10 @@ fun hideKeyboard( rootViewContext : Context, childEditText : View){
         hide soft keyboard
         view be View from window that have views with input
  */
-fun hideKeyboard( view : View){
-    val imm = view.rootView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm?.let{it.hideSoftInputFromWindow(view.windowToken, 0) }
+fun hideKeyboard(view: View) {
+    val imm =
+        view.rootView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm?.let { it.hideSoftInputFromWindow(view.windowToken, 0) }
 }
 
 

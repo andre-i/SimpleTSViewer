@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ShowChannelViewModel : ViewModel() {
+internal class ShowChannelViewModel : ViewModel() {
 
     private val isButtonsEnabled : MutableLiveData<Boolean> = MutableLiveData(true)
 

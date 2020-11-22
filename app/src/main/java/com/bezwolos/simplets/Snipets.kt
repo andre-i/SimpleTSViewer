@@ -5,7 +5,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.concurrent.thread
 
-class Snipets (){
+private class Snipets (){
 
     private val TAG="snipets"
     suspend fun sendGet() {

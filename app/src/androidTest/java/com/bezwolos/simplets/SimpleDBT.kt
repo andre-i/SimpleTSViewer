@@ -162,7 +162,7 @@ class SimpleDBT {
 
     @Test
     @Throws(Exception::class)
-    fun checkSetIsChecked() {
+    fun checkSetChannelIsChecked() {
         checkChangeIsChecked()
         Log.d(TAG, "[  checkSetIsChecked  ]")
         showDBcontent()

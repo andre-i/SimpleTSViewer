@@ -29,9 +29,15 @@
     <string name="delete_channel_confirm_message">Удалить канал %1$s</string>
     <string name="save_channel_confirm">Применить изменения ?</string>
     <string name="on_delete_channel_confirm">Удалить канал %1$s</string>
-    <string name="wrong_networking_message">"Ошибка интернет соединения. \\n Проверьте соединение "</string>
-    <string name="wrong_request_to_thingspeak">Сервер не смог найти данные для канала. Проверьте существования канала и попробуйте ещё</string>
+    <string name="wrong_networking_message">Ошибка интернет соединения. Проверьте соединение  и попробуйте ещё раз.</string>
+    <string name="wrong_request_to_thingspeak">Сервер не смог найти данные для канала. Проверьте существования канала и попробуйте ещё раз.</string>
     <string name="wrong_data_format">Непонятный формат данных. Вероятно проблемы с параметрами канала. Проверьте их.</string>
     <string name="delete_channel_header">Подтвердите удаление канала</string>
     <string name="wrong_get_data_header">Ошибка получения данных</string>
+    <string name="exit">Выход</string>
+    <string name="frequency_duration">Частота опроса</string>
+    <string name="start_watch">Запущено обновление данных для канала</string>
+    <string name="stop_watch">Обновление данных остановлено</string>
+    <string name="wrong_watch">Для канала не установлено время обновления данных. Перейдите на страницу настройки каналов и установите @string/frequency_duration</string>
+    <string name="warning">Внимание!</string>
 </resources>

@@ -57,9 +57,17 @@
     <string name="save_channel_confirm">Save channel ?</string>
     <string name="on_delete_channel_confirm">You want delete channel %1$s</string>
     <!--  connect wrongs  -->
-    <string name="wrong_networking_message">Can`t get data from Thingspeak \\ncheck Network and retry</string>
-    <string name="wrong_request_to_thingspeak">bad channel Id . Check channel parameters and retry</string>
+    <string name="wrong_networking_message">Can`t get data from Thingspeak check Network and retry.</string>
+    <string name="wrong_request_to_thingspeak">bad channel Id . Check channel parameters and retry.</string>
     <string name="wrong_data_format">Can`t parse data from server. \\nCheck channel parameters</string>
     <string name="wrong_get_data_header">Error on get data</string>
     <string name="delete_channel_header">On delete channel</string>
+    <!--  quit  -->
+    <string name="exit">Quit</string>
+    <!--  autoupdate values -->
+    <string name="frequency_duration">Request frequency</string>
+    <string name="wrong_watch">For channel cannot set frequency duration. For set it go to channels and set @string/frequency_duration</string>
+    <string name="warning">Warning!</string>
+    <string name="stop_watch">Stop watch</string>
+    <string name="start_watch">Success start watch for channel</string>
 </resources>

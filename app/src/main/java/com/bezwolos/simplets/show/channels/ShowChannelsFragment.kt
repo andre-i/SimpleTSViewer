@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 /**
  * A fragment representing a list of Items.
  */
-class ShowChannelsFragment : Fragment(), ChannelsActionListener {
+internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
 
     private val TAG = "simplets.ShowChanFrag"
 
@@ -36,7 +37,7 @@ class ShowChannelsFragment : Fragment(), ChannelsActionListener {
     private var columnCount = 1
     private lateinit var channels: Array<Channel>
 
-    lateinit var viewModel : ViewModel
+    lateinit var viewModel: ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +65,7 @@ class ShowChannelsFragment : Fragment(), ChannelsActionListener {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 adapter = ChannelRecyclerViewAdapter(channels, self)
-                with((adapter as ChannelRecyclerViewAdapter)){
+                with((adapter as ChannelRecyclerViewAdapter)) {
                     setChannelsListener(listener)
                 }
             }
@@ -113,7 +114,7 @@ class ShowChannelsFragment : Fragment(), ChannelsActionListener {
 
     /* on delete confirm */
     private fun showOnDeleteConfirm(channelId: Long) {
-                AlertDialog.Builder(context!!).setTitle(R.string.delete_channel_header)
+        AlertDialog.Builder(context!!).setTitle(R.string.delete_channel_header)
             .setMessage(resources.getString(R.string.on_delete_channel_confirm, ": $channelId"))
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 deleteChannel(channelId)
@@ -128,37 +129,32 @@ class ShowChannelsFragment : Fragment(), ChannelsActionListener {
             .setCancelable(true)
             .setIcon(android.R.drawable.ic_dialog_alert).show()
     }
+
     /*
         delete channel record from database
      */
     private fun deleteChannel(channelId: Long) {
-            Log.i(TAG, "delete channel $channelId")
-            GlobalScope.launch(Dispatchers.IO) {
-                with((activity?.application as MyApp).getDataHandler()) {
-                    deleteChannel(channelId)
-                    refreshChannelsFromDB()
-                }
-                GlobalScope.launch(Dispatchers.Main) {
-                    findNavController().navigate(R.id.action_to_Channels)
-                }
+        Log.i(TAG, "delete channel $channelId")
+        GlobalScope.launch(Dispatchers.IO) {
+            with((activity?.application as MyApp).getDataHandler()) {
+                deleteChannel(channelId)
+                refreshChannelsFromDB()
             }
+            GlobalScope.launch(Dispatchers.Main) {
+                findNavController().navigate(R.id.action_to_Channels)
+            }
+        }
 
 
     }
 
 
-
     private fun showChannel(channelId: Long) {
-        GlobalScope.launch(Dispatchers.IO) {
-            with((activity?.application as MyApp).getDataHandler()) {
-                makeChannelVisible(channelId)
-                updateFieldsFromTS(channelId)
-            }
-            GlobalScope.launch(Dispatchers.Main) {
-                var name = getDataHandler().getChannelName()
-                if( name.length < 1) name = "$channelId"
+        lifecycleScope.launch(Dispatchers.IO){
+            (activity?.application as MyApp).getDataHandler().updateFieldsFromTS(channelId)
+            lifecycleScope.launch(Dispatchers.Main){
                 val bundle = Bundle()
-                bundle.putCharSequence(FieldsFragment.CHANNEL_NAME_VALUE, name)
+                bundle.putLong(FieldsFragment.CHANNEL_ID_VALUE, channelId)
                 findNavController().navigate(R.id.action_Channel_to_Fields, bundle)
             }
         }
@@ -178,8 +174,6 @@ class ShowChannelsFragment : Fragment(), ChannelsActionListener {
         }
 
     }
-
-
 
 
     /* =============================================================================================  */

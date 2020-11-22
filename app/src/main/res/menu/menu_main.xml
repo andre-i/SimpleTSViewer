@@ -14,6 +14,10 @@
             android:orderInCategory="100"
             android:title="@string/channels"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/exit"
+            android:orderInCategory="200"
+            android:title="@string/exit" />
     </group>
 
 

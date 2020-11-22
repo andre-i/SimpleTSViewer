@@ -22,7 +22,7 @@ import com.bezwolos.simplets.show.ChannelsActionListener
  * [RecyclerView.Adapter] that can display a [ChannelItem].
  *
  */
-class ChannelRecyclerViewAdapter(
+internal class ChannelRecyclerViewAdapter(
     private val values: Array<Channel>,
     private val context: Fragment
 ) : RecyclerView.Adapter<ChannelRecyclerViewAdapter.ViewHolder>() {
@@ -34,9 +34,6 @@ class ChannelRecyclerViewAdapter(
 
     private lateinit var viewModel : ShowChannelViewModel
     private lateinit var liveData : LiveData<Boolean>
-    private lateinit var edit: TextView
-    private lateinit var show: TextView
-    private lateinit var del: TextView
 
     val EDIT = "edit"
     val DELETE = "delete"
@@ -52,28 +49,26 @@ class ChannelRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        edit = holder.edit
-        del = holder.del
-        show =  holder.show
+        val buttons = arrayOf(holder.edit, holder.del , holder.show )
         val item = values[position]
-        val isChecked = if(item.isChecked)android.R.drawable.checkbox_on_background else android.R.drawable.checkbox_off_background
-        holder.isCheckedView.background = context.resources.getDrawable( isChecked)
+     //   val isChecked = if(item.isChecked)android.R.drawable.radiobutton_on_background else android.R.drawable.radiobutton_off_background
+     //   holder.isCheckedView.background = context.resources.getDrawable( isChecked)
         holder.idView.text = item.channelId.toString()
         holder.idName.text = item.channelName
-        edit.setOnClickListener{
+        holder.edit.setOnClickListener{
             makeAction(EDIT, item.channelId)
         }
-       del.setOnClickListener{
+       holder.del.setOnClickListener{
            makeAction(DELETE, item.channelId)
        }
-       show.setOnClickListener{
+           holder.show.setOnClickListener{
             Log.d(TAG, "Click on SHOW")
             viewModel.setButtonEnabled(false)
            item.isChecked = true
             makeAction(SHOW, item.channelId)
-           // holder.show.alpha = 0.3F
         }
-        observeButtons(context)
+        // work for all items in RecyclerView
+        observeCurrentButtons(context, buttons)
     }
 
 
@@ -125,21 +120,12 @@ class ChannelRecyclerViewAdapter(
     /*
             observe buttons state on make internet request
      */
-    private fun observeButtons(context : LifecycleOwner){
-
+    private fun observeCurrentButtons(context : LifecycleOwner, buttons : Array<TextView>){
         liveData.observe(context, Observer { isEnabled ->
             Log.d(TAG, "liveData<Boolean>.observe change boolean")
-            edit.setEnabled(isEnabled)
-            show.setEnabled(isEnabled)
-            del.setEnabled(isEnabled)
-            if(isEnabled){
-                edit.alpha = 1F
-                show.alpha = 1F
-                del.alpha = 1F
-            }else{
-                edit.alpha = 0.3F
-                show.alpha = 0.3F
-                del.alpha = 0.3F
+            for (item in buttons) {
+                item.setEnabled(isEnabled)
+                item.alpha = if (isEnabled) 1F else 0.3F
             }
         })
     }

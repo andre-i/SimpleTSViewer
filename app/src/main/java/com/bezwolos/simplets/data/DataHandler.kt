@@ -12,7 +12,7 @@ import java.net.URL
     On Errors in "try- catch" block be set error message in var lastError
     before use networking methods ( get Data from internet) need clean last error message call DropErrors()
  */
-class DataHandler(database: DatabaseSimpleTS) {
+internal class DataHandler(database: DatabaseSimpleTS) {
     private val TAG = "simplets.DataHandler"
 
 
@@ -67,7 +67,7 @@ class DataHandler(database: DatabaseSimpleTS) {
     }
 
 
-    fun getChannelName(): String {
+    fun getCurrentChannelName(): String {
         return curChannel.channelName
     }
 
@@ -166,17 +166,18 @@ class DataHandler(database: DatabaseSimpleTS) {
     /*
         get values from Thingspeak for exists channel and set fields value to Field
      */
-    suspend fun updateFieldsFromTS(channelId: Long) {
-        val data = getDataFromTS_OnUpdate(channelId)
+    suspend fun updateFieldsFromTS(channelId: Long = 0L) {
+        val id = if(channelId == 0L) curChannel.channelId else channelId
+        val data = getDataFromTS_OnUpdate(id)
         if (data.isEmpty()) return  // if array is empty do nothing
-        val all = db.fieldsDao.getChannelFields(channelId)
+        val all = db.fieldsDao.getChannelFields(id)
         if (all.isEmpty() || all.size != data.size) {
             Log.w(
                 TAG,
-                "wrong data (empty database fields or fields count changed on Thingspeak) I DELETE CHANNEL{$channelId}"
+                "wrong data (empty database fields or fields count changed on Thingspeak) I DELETE CHANNEL{$id}"
             )
             // action on wrong data
-            deleteChannel(channelId)
+            deleteChannel(id)
             refreshChannelsFromDB()
             curFields = emptyArray<Field>()
             return  // if array is empty do nothing
@@ -192,7 +193,7 @@ class DataHandler(database: DatabaseSimpleTS) {
         try get and data from thingspeak
         if is some wrong - log on problen and return empty answer
      */
-    private fun getDataFromTS_OnUpdate(channelId: Long): List<String> {
+    suspend private fun getDataFromTS_OnUpdate(channelId: Long): List<String> {
         val channel = db.channelsDao.getChannel(channelId)
         if (channel == null) {
             Log.e(
@@ -257,7 +258,7 @@ class DataHandler(database: DatabaseSimpleTS) {
     }
 
     /*
-        set isSchow for gotten channel and rmove for another
+        set isSchow for gotten channel and remove for another
      */
    suspend fun makeChannelVisible(channelId: Long): Boolean {
         val channel = db.channelsDao.getChannel(channelId) ?: return false
@@ -321,6 +322,9 @@ class DataHandler(database: DatabaseSimpleTS) {
     }
 
     /*
-        return visible channels
+        return current channel
      */
+    fun getCurrentChannel():Channel{
+        return curChannel
+    }
 }

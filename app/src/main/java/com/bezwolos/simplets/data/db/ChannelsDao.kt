@@ -4,7 +4,7 @@ import androidx.room.*
 import com.bezwolos.simplets.data.Channel
 
 @Dao()
-interface ChannelsDao {
+internal interface ChannelsDao {
 
 
     @Insert

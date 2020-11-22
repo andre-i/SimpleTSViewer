@@ -14,5 +14,7 @@ data class Channel(
     @ColumnInfo(name = "protocolName")
     var protocolName : String = "http",
     @ColumnInfo(name = "isChecked")
-    var isChecked : Boolean = false
+    var isChecked : Boolean = false,
+    @ColumnInfo(name = "requestFrequency")
+    var requestFrequency : Long = 0L
 )

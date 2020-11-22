@@ -7,6 +7,7 @@
     android:layout_margin="@dimen/list_margin"
     android:layout_marginTop="@dimen/List_margin_top"
     android:background="@drawable/list_rounded_background_light"
+    android:minHeight="0dp"
     android:padding="@dimen/list_padding">
 
     <!--  FIRST BLOCK ( name ) -->
@@ -140,6 +141,7 @@
         android:paddingEnd="4dp"
         android:requiresFadingEdge="horizontal"
         android:text="@android:string/ok"
+        android:textColor="#FDFAF7"
         android:textSize="@dimen/button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

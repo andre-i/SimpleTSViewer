@@ -23,8 +23,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.zip.Inflater
+import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity() {
+internal class MainActivity : AppCompatActivity() {
     private val TAG = "simplets.main"
 
     private val IS_RESTART = "isRestart"
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.all_channels -> showListChannelsFragment()
             R.id.help -> showHelpFragment()
+            R.id.exit -> quit()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -99,6 +101,13 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun quit(): Boolean {
+        Log.d(TAG, "Try exit")
+        this.onDestroy()
+        exitProcess(0)
+        return true
+    }
+
 
     //  =============  channel dialog handler  =================
 
@@ -109,20 +118,22 @@ class MainActivity : AppCompatActivity() {
                     showDialog()
                 }
             } else {
-                dHandler.updateFieldsFromTS(dHandler.getCurrentChannelId())
-                GlobalScope.launch(Dispatchers.Main) {
-                    showCheckedChannel()
+                GlobalScope.launch(Dispatchers.IO) {
+                    dHandler.updateFieldsFromTS(dHandler.getCurrentChannelId())
+                    GlobalScope.launch(Dispatchers.Main){
+                        showCheckedChannel()
+
+                    }
                 }
             }
         }
     }
 
     private fun showCheckedChannel() {
-        var name = dHandler.getChannelName()
-        if (name.length < 1) name = "${dHandler.getCurrentChannelId()}"
+        val id = dHandler.getCurrentChannelId()
         val bundle = Bundle()
-        bundle.putCharSequence(FieldsFragment.CHANNEL_NAME_VALUE, name)
-        navController.navigate(R.id.action_Channel_to_Fields, bundle)
+        bundle.putLong(FieldsFragment.CHANNEL_ID_VALUE, id)
+        navController.navigate(R.id.action_to_Fields, bundle)
     }
 
 
