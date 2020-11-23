@@ -73,7 +73,7 @@ internal class PropsChannelFragment : Fragment() {
         viewModel.setFields(fields)
         viewModel.channelId = channelId
         viewModel.channelName = dHandler.getCurrentChannelName()
-
+        viewModel.frequency = dHandler.getCurrentChannel().requestFrequency
     }
 
     override fun onCreateView(
@@ -168,7 +168,7 @@ internal class PropsChannelFragment : Fragment() {
             //  Log.d(TAG, "change focus hasFocus = $hasFocus text = \"${(v as EditText).text}\"")
             if (!hasFocus && v != null) {
                 frequencyDuration = frequency.text.toString().toLong()
-                Log.d(TAG, "get channelName = \"$channelName\"")
+                Log.d(TAG, "get channel frequencyDuration = \"$channelName\"")
                 viewModel.frequency = frequencyDuration
             }
         }

@@ -51,8 +51,11 @@ internal class ChannelRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val buttons = arrayOf(holder.edit, holder.del , holder.show )
         val item = values[position]
-     //   val isChecked = if(item.isChecked)android.R.drawable.radiobutton_on_background else android.R.drawable.radiobutton_off_background
+      //  val isChecked = if(item.isChecked)android.R.drawable.radiobutton_on_background else android.R.drawable.radiobutton_off_background
      //   holder.isCheckedView.background = context.resources.getDrawable( isChecked)
+        Log.d(TAG, "On create channels list[$position]= ${item.isChecked}")
+        holder.isCheckedView.setChecked (item.isChecked)
+        holder.isCheckedView.setEnabled (false)
         holder.idView.text = item.channelId.toString()
         holder.idName.text = item.channelName
         holder.edit.setOnClickListener{
@@ -129,4 +132,5 @@ internal class ChannelRecyclerViewAdapter(
             }
         })
     }
+
 }

@@ -8,6 +8,7 @@ internal class ShowChannelViewModel : ViewModel() {
 
     private val isButtonsEnabled : MutableLiveData<Boolean> = MutableLiveData(true)
 
+
     fun setButtonEnabled( isEnabled : Boolean){
         isButtonsEnabled.value = isEnabled
     }

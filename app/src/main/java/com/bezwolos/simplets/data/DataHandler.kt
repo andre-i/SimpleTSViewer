@@ -21,6 +21,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
     private var curChannels = emptyArray<Channel>()
     private var curChannel: Channel = Channel(-1L, "Empty channel")
     private var lastError = ""
+    private var waitForSiteAnswer = false
 
     init {
         db = database
@@ -89,6 +90,8 @@ internal class DataHandler(database: DatabaseSimpleTS) {
         return curChannel.channelName
     }
 
+    fun isWaitForSiteAnswer(): Boolean = waitForSiteAnswer
+
 
 //                             ================================
 /*  ======================================  NetWorking  ========================================= */
@@ -125,6 +128,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
     make get request by url param to thingspeak and return List witch fields data
      */
     private fun getDataFromTS(_url: String): List<String> {
+        waitForSiteAnswer = true
         Log.d(TAG, "get Channel Data from server")
         lastError = ""
         val url = URL(_url)
@@ -153,6 +157,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
             Log.e(TAG, "Error ON GET DATA FROM SERVER ", e)
             Log.w(TAG, "Error is : [${e.toString()}]")
             lastError = NETWORKING_ERROR
+            waitForSiteAnswer = false
             return emptyList()
         }
         val full = response.toString()
@@ -160,6 +165,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
         var fields = full.substring(first, full.length - 1)
         fields = fields.replace("\"", "")
         Log.d(TAG, "fields is [ $fields ]")
+        waitForSiteAnswer = false
         return fields.split(",")
     }
 
@@ -168,7 +174,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
      */
     suspend fun updateFieldsFromTS(channelId: Long = 0L) {
         val id = if(channelId == 0L) curChannel.channelId else channelId
-        val data = getDataFromTS_OnUpdate(id)
+        val data = getDataFromTSOnUpdate(id)
         if (data.isEmpty()) return  // if array is empty do nothing
         val all = db.fieldsDao.getChannelFields(id)
         if (all.isEmpty() || all.size != data.size) {
@@ -193,7 +199,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
         try get and data from thingspeak
         if is some wrong - log on problen and return empty answer
      */
-    suspend private fun getDataFromTS_OnUpdate(channelId: Long): List<String> {
+    private suspend fun getDataFromTSOnUpdate(channelId: Long): List<String> {
         val channel = db.channelsDao.getChannel(channelId)
         if (channel == null) {
             Log.e(
@@ -243,6 +249,12 @@ internal class DataHandler(database: DatabaseSimpleTS) {
     /*                            write or change channel
             ============================   CHANNEL  ==========================================
      */
+/*
+    suspend fun getChannel(channelId : Long): Channel? {
+       return db.channelsDao.getChannel(channelId)
+    }*/
+
+
   suspend fun writeChannel(channel: Channel): Boolean {
         try {
             if (db.channelsDao.getChannel(channel.channelId) == null) {

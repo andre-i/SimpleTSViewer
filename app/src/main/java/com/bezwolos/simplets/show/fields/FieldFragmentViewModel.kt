@@ -17,7 +17,7 @@ internal class FieldFragmentViewModel : ViewModel() {
     private val TAG = "simplets.FieldFrgmVM"
 
     private val values = MutableLiveData<Array<Field>>(emptyArray<Field>())
-    private var channelName = ""
+    private var channelName = " "
     private var isWatch = false
     private var frequency = 0L
 
@@ -26,7 +26,8 @@ internal class FieldFragmentViewModel : ViewModel() {
     fun prepare(handler: DataHandler) {
         dataHandler = handler
         setFieldsValues(getFieldsToShow())
-        channelName = dataHandler.getCurrentChannelName()
+        val name = dataHandler.getCurrentChannelName()
+        channelName = if(name.length > 1)name else dataHandler.getCurrentChannelId().toString()
         frequency = dataHandler.getCurrentChannel().requestFrequency
     }
 

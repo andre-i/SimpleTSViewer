@@ -37,7 +37,7 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
     private var columnCount = 1
     private lateinit var channels: Array<Channel>
 
-    lateinit var viewModel: ViewModel
+    lateinit var viewModel: ShowChannelViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
         channels = getDataHandler().getChannels()
-
+        viewModel = ViewModelProvider(this).get(ShowChannelViewModel::class.java)
 
     }
 
@@ -70,6 +70,7 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
                 }
             }
         }
+        checkWaitForAnswer()
         return view
     }
 
@@ -150,12 +151,16 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
 
 
     private fun showChannel(channelId: Long) {
-        lifecycleScope.launch(Dispatchers.IO){
-            (activity?.application as MyApp).getDataHandler().updateFieldsFromTS(channelId)
-            lifecycleScope.launch(Dispatchers.Main){
+        lifecycleScope.launch(Dispatchers.IO) {
+            with((activity?.application as MyApp).getDataHandler()) {
+                updateFieldsFromTS(channelId)
+                makeChannelVisible(channelId)
+            }
+            lifecycleScope.launch(Dispatchers.Main) {
                 val bundle = Bundle()
                 bundle.putLong(FieldsFragment.CHANNEL_ID_VALUE, channelId)
-                findNavController().navigate(R.id.action_Channel_to_Fields, bundle)
+                findNavController().navigate(R.id.action_to_Fields, bundle)
+
             }
         }
     }
@@ -173,6 +178,11 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
             }
         }
 
+    }
+
+    private fun checkWaitForAnswer() {
+        val busy = getDataHandler().isWaitForSiteAnswer()
+        viewModel.setButtonEnabled(!busy)
     }
 
 
