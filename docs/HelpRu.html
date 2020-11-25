@@ -1,11 +1,14 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style>
             .center{ text-align: center ; color: #204590 }
             ul{align-content: center; color: #202060}
             img{ width: 96% }
-
-
+            td {
+               padding: 5px;
+               vertical-align: top;
+               }
     </style>
 </head>
 <body>
@@ -14,60 +17,96 @@
 <table>
     <tr>
         <td width="50%">
-            <ul><h4 align="center">Properties:</h4>
-                <li></li>
-                <li></li>
-                <li>
+            <ul><h4 align="center">Возможности:</h4>
+                <li>Работает <big><b>только с открытыми каналами</b></big></li>
+                <li>Просмотр с нескольких каналов, но не одновременно. Сморим один, меняем, смотрим
+                    другой
                 </li>
-                <li></li>
+                <li>Настраиваемый показ - можно выбрать, что показывать, насторить метку(имя)
+                    показываемой величины,
+                    установить едмнмцы изменения
+                </li>
+                <li>Настраиваемое автообновление показа данных( есть или нет и время между
+                    обновлениями)
+                </li>
             </ul>
         </td>
-        <td></td>
+        <td>
+            <img src="/SimpleTSViewer/screensRu/fieldsWithComment.png" alt="Рисунок с пояснениями">
+        </td>
     </tr>
 </table>
 <table>
+    <tr><td width="20%"> </td><td width="30%"> </td><td width="20%"> </td><td width="30%"> </td></tr>
     <tr>
         <td><img src="/SimpleTSViewer/screensRu/menu.png" alt="Menu "/></td>
         <td>
-
-
+            При первом запуске запрос на создание канала появится автоматически. Позже надо зайти в
+            меню "Каналы".
+            После открытия окна каналов снова зайти в меню и выбрать пункт "Добавить канал"
         </td>
-        <td><img src="/SimpleTSViewer/screensRu/addChannelScreen.png" alt="add channel screen"/></td>
+        <td><img src="/SimpleTSViewer/screensRu/addChannelScreen.png"
+                 alt="рисунок с экраном добавления канала"/></td>
         <td>
-
+            В запросе надо записать ID канала. На сайте ID (на сайте ищите <u>channelID</u>
+            находится почти наверху и состоит только из цифр).
         </td>
     </tr>
     <tr>
-        <td><img src="/SimpleTSViewer/screensRu/channelProperties.png" alt="channel properties"/></td>
+        <td><img src="/SimpleTSViewer/screensRu/channelProperties.png" alt="настройки для канала"/>
+        </td>
         <td>
-            Next step - fill the channel properties.
+            Следующий шаг - настройка отображения канала. Сверху заполняются <br>
+            имя канала - Заголовок вверху<br>
+            частота опроса - если надо периодичсески обновлять содержимое с сайта то необходимо
+            установить желаемую
+            частоту обновления, но не менее 15 сек(минимум для открытых каналов).
+            После заполнения надо жать на "ввод" иначе новые значения могут не сохраниться
             <ul>
-                <li>field name - label for field</li>
-                <li>measure unit - label for field value</li>
-                <li>checkbox - whether show field(Default value checkbox is checked)</li>
+                <li>имя - метка поля. Кратко описывает что это за поле. Например "Температура" ,
+                    "Напряжение" и пр.
+                </li>
+                <li>Единицы измерения - (метры, килограмы, попугаи и тп.)</li>
+                <li>флажок - если установлен , то поле будет показано( по умолчанию установлен)</li>
             </ul>
+            <em>После заполнения поля <b>обязательно</b> нажимаем на кнопку "ok" - иначе изменения
+                не будут записаны</em>
         </td>
-        <td><img src="/SimpleTSViewer/screensRu/afterFill.png" alt="channel properties after fill fields"/></td>
+        <td><img src="/SimpleTSViewer/screensRu/afterFill.png" alt="после настолйки"/></td>
         <td>
+            После настройки надо тапнуть по жёлтой кнопке - находится вверху.<br>
+            <em>Вообще заполнять поля не обязательно - но тогда будут отображаться только
+                полученные значения. Как в таком разобраться ?</em><br>
 
         </td>
     </tr>
     <tr>
-        <td><img src="/SimpleTSViewer/screensRu/saveConfirm.png" alt="on save confirm dialog"/></td>
+        <td><img src="/SimpleTSViewer/screensRu/saveConfirm.png" alt="запрос на сохранение"/></td>
         <td>
-
+            В запросе на сохранение внимательно проверьте что получилось. Если всё верно - жмём
+            "ok". Если
+            надо править жмём "cancel" и исправляем.
         </td>
-        <td><img src="/SimpleTSViewer/screensRu/channelsList.png" alt="Channel list"/></td>
-        <td></td>
+        <td><img src="/SimpleTSViewer/screensRu/channelsList.png" alt="Каналы"/></td>
+        <td>
+            После сохранения будет переход к экрану со списком каналов. Там для любого из каналов
+            возможно
+            выбрать одно из действий - редактировать, показать, удалить. Выбор за вами.
+            Если тапнуть по кнопке "Показать",то после запроса, будут показаны последние значения.
+        </td>
     </tr>
     <tr>
-        <td><img src="/SimpleTSViewer/screensRu/channelNoWatch.png" alt="No watch view for channel"/></td>
+        <td><img src="/SimpleTSViewer/screensRu/channelNoWatch.png"
+                 alt="отображение полученных данных"/></td>
         <td>
-
+            На экране показа полей есть кнопка автообновления ( сверху, полупрозрачная ). Если
+            нажать на неё, то
+            значения будут обновляться в указанный срок.
         </td>
-        <td><img src="/SimpleTSViewer/screensRu/channelWatch.png" alt="watch view for channel"/></td>
+        <td><img src="/SimpleTSViewer/screensRu/channelWatch.png" alt="запущено автообновление"/>
+        </td>
         <td>
-
+            Для отмены автообновления снова жмём на ту-же кнопку.
         </td>
     </tr>
 </table>
