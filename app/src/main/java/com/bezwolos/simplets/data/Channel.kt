@@ -10,11 +10,13 @@ data class Channel(
     @ColumnInfo(name = "channelId")
     val channelId: Long,
     @ColumnInfo(name = "channelName")
-    var channelName : String,
+    var channelName: String = "",
     @ColumnInfo(name = "protocolName")
-    var protocolName : String = "http",
+    var protocolName: String = "http",
     @ColumnInfo(name = "isChecked")
-    var isChecked : Boolean = false,
+    var isChecked: Boolean = false,
     @ColumnInfo(name = "requestFrequency")
-    var requestFrequency : Long = 0L
+    var requestFrequency: Long = 0L,
+    @ColumnInfo(name = "readTSKey")
+    var readTSKey: String = ""
 )

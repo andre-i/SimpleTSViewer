@@ -83,7 +83,7 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
         if (item.itemId == R.id.add_channel) {
-            Log.d(TAG, "tap on 'add_channel")
+            Log.d(TAG, "tap on 'add_channel'")
             (activity as MainActivity).showDialog()
         }
         return true
@@ -115,20 +115,23 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
 
     /* on delete confirm */
     private fun showOnDeleteConfirm(channelId: Long) {
-        AlertDialog.Builder(context!!).setTitle(R.string.delete_channel_header)
-            .setMessage(resources.getString(R.string.on_delete_channel_confirm, ": $channelId"))
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                deleteChannel(channelId)
-            }
-            .setNegativeButton(android.R.string.cancel) { _, _ ->
-                Toast.makeText(
-                    context,
-                    activity?.resources?.getString(R.string.cancel_label),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            .setCancelable(true)
-            .setIcon(android.R.drawable.ic_dialog_alert).show()
+        val curContext = context
+        if( curContext != null) {
+            AlertDialog.Builder(curContext).setTitle(R.string.delete_channel_header)
+                .setMessage(resources.getString(R.string.on_delete_channel_confirm, ": $channelId"))
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    deleteChannel(channelId)
+                }
+                .setNegativeButton(android.R.string.cancel) { _, _ ->
+                    Toast.makeText(
+                        context,
+                        activity?.resources?.getString(R.string.cancel_label),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                .setCancelable(true)
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
+        }
     }
 
     /*
@@ -182,6 +185,7 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
 
     private fun checkWaitForAnswer() {
         val busy = getDataHandler().isWaitForSiteAnswer()
+        Log.d(TAG, "on createView have busy = $busy")
         viewModel.setButtonEnabled(!busy)
     }
 

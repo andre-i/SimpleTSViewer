@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/List_margin_top"
+        android:layout_marginTop="@dimen/List_margin_top"
+        android:background="@drawable/list_rounded_background_light"
+        android:minHeight="0dp">
+
+
+        <TextView
+            android:id="@+id/conf_choose_channel_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/choose_channel"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Spinner
+            android:id="@+id/conf_channel_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conf_choose_channel_label" />
+        <TextView
+            android:id="@+id/conf_choose_field_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/choose_field"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conf_channel_spinner" />
+
+        <Spinner
+            android:id="@+id/conf_field_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conf_choose_field_label" />
+
+        <TextView
+            android:id="@+id/conf_notify_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/conf_notify_label"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintBottom_toBottomOf="@+id/conf_notify_checkbox"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/conf_notify_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/conf_notify_label"
+            app:layout_constraintTop_toBottomOf="@id/conf_field_spinner" />
+
+        <TextView
+            android:id="@+id/conf_notify_max_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/max_val"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/conf_max_notify_val"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/conf_max_notify_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:inputType="numberSigned|numberDecimal"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toEndOf="@id/conf_notify_max_label"
+            app:layout_constraintTop_toBottomOf="@id/conf_notify_label" />
+
+        <TextView
+            android:id="@+id/conf_notify_min_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/min_val"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/conf_min_notify_val"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/conf_min_notify_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:inputType="numberSigned|numberDecimal"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/conf_notify_min_label"
+            app:layout_constraintTop_toBottomOf="@id/conf_max_notify_val" />
+
+        <View
+            android:id="@+id/conf_divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/list_margin"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conf_min_notify_val" />
+
+        <TextView
+            android:id="@+id/conf_update_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/conf_update_time"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/conf_update_value"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <EditText
+            android:id="@+id/conf_update_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:inputType="number"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/conf_update_label"
+            app:layout_constraintTop_toBottomOf="@+id/conf_divider1" />
+
+        <TextView
+            android:id="@+id/conf_font_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/conf_font_size"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/conf_font_value"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <EditText
+            android:id="@+id/conf_font_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:inputType="number"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/conf_font_label"
+            app:layout_constraintTop_toBottomOf="@+id/conf_update_value" />
+
+        <TextView
+            android:id="@+id/conf_color_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:text="@string/conf_color_choose"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conf_font_value" />
+
+
+        <RadioGroup
+            android:id="@+id/conf_colors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_margin"
+            android:background="#CBB7AEA0"
+            android:orientation="horizontal"
+            android:padding="@dimen/List_margin_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conf_color_label">
+
+
+            <RadioButton
+                android:id="@+id/conf_black_color"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/list_margin"
+                android:background="@color/radio_brown"
+                android:buttonTint="@color/radio_white" />
+
+            <RadioButton
+                android:id="@+id/conf_white_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/list_margin"
+                android:background="@color/radio_white"
+                android:buttonTint="@color/colorPrimaryDark" />
+
+            <RadioButton
+                android:id="@+id/conf_green_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/list_margin"
+                android:background="@color/radio_green"
+                android:buttonTint="@color/colorPrimaryDark" />
+
+            <RadioButton
+                android:id="@+id/conf_blue_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/list_margin"
+                android:background="@color/radio_blue"
+                android:buttonTint="@color/radio_white" />
+
+            <RadioButton
+                android:id="@+id/conf_yellow_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/radio_yellow"
+                android:buttonTint="@color/colorPrimaryDark" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/horisontal_line_height"
+            android:layout_marginBottom="@dimen/List_margin_top"
+            android:background="@drawable/button_rounded_simple"
+            android:text="@string/apply_widget"
+            android:textSize="@dimen/button_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="wrap"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/conf_colors" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

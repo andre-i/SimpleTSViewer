@@ -24,15 +24,40 @@
         android:id="@+id/channel_id_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="@dimen/List_margin_top"
+        android:autofillHints=""
         android:hint="@string/must_digit"
         android:inputType="number"
         android:paddingStart="1dp"
         android:paddingEnd="2dp"
+        android:textSize="@dimen/label_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/id_label"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/add_ali_key_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:text="@string/add_dialog_key_label"
+        android:textSize="@dimen/header_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/add_api_key_value"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_api_key_value" />
+
+    <EditText
+        android:id="@+id/add_api_key_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/List_margin_top"
+        android:autofillHints="@string/add_api_key_hint"
+        android:hint="@string/add_api_key_hint"
+        android:inputType="text"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/add_ali_key_label"
+        app:layout_constraintTop_toBottomOf="@id/channel_id_value" />
 
     <Button
         android:id="@+id/button_ok"
@@ -56,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_ok"
-        app:layout_constraintTop_toBottomOf="@id/channel_id_value"
+        app:layout_constraintTop_toBottomOf="@id/add_api_key_value"
         app:layout_constraintVertical_bias="0.5" />
 
 

@@ -21,104 +21,51 @@
 
 
     <TextView
+        android:id="@+id/dialog_channel_ID_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:text="          "
+        android:textSize="@dimen/header_text_size"
+        app:layout_constraintEnd_toStartOf="@+id/channel_name_label"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/channel_name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:paddingStart="2dp"
-        android:paddingEnd="2dp"
-        android:text="@string/set_channel_name"
-        android:textSize="@dimen/header_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_channel_name"
-        app:layout_constraintEnd_toStartOf="@+id/edit_channel_name"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit_channel_name" />
-
-    <EditText
-        android:id="@+id/edit_channel_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_edit_margin_start"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="8dp"
-        android:autofillHints=""
-        android:background="@android:color/background_light"
-        android:hint="@string/set_channel_hint"
-        android:inputType="text"
+        android:layout_margin="@dimen/list_margin"
+        android:text="          "
         android:textSize="@dimen/header_text_size"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/channel_name_label"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dialog_channel_ID_label"
         app:layout_constraintTop_toTopOf="parent" />
     <!--  app:layout_constraintBottom_toTopOf="@+id/fields_list"  -->
-
-    <TextView
-        android:id="@+id/request_frequency_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:paddingStart="2dp"
-        android:paddingEnd="2dp"
-        android:text="@string/frequency_duration"
-        android:textSize="@dimen/header_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/request_frequency_value"
-        app:layout_constraintEnd_toStartOf="@+id/request_frequency_value"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/request_frequency_value" />
-
-    <EditText
-        android:id="@+id/request_frequency_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/list_margin"
-        android:layout_marginEnd="4dp"
-        android:autofillHints=""
-        android:background="@android:color/background_light"
-        android:ems="3"
-        android:inputType="number"
-        android:textSize="@dimen/header_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_channel_name" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fields_list"
         android:name="com.bezwolos.simplets.show.create.AddChannelFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/list_margin"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="@dimen/list_margin"
         android:layout_marginTop="@dimen/List_margin_top"
-        android:layout_marginEnd="6dp"
+        android:layout_marginEnd="@dimen/list_margin"
         android:padding="@dimen/list_padding"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/request_frequency_value"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_channel_ID_label"
         tools:context=".show.create.PropsChannelFragment"
         tools:listitem="@layout/fragment_props_channel">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_save_channel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/List_margin_top"
-        android:layout_weight="1"
-        android:alpha="0.75"
-        android:backgroundTint="#F9FD77"
-        android:clickable="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/channel_name_label"
-        app:srcCompat="@drawable/ic_done" />
 
     <!--
     <androidx.constraintlayout.widget.Guideline

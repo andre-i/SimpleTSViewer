@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widget_root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2dp">
+
+
+    <TextView
+        android:id="@+id/appwidget_name_text"
+        style="@android:style/Widget.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:alpha="1"
+        android:fontFamily="serif"
+        android:paddingStart="@dimen/small_padding"
+        android:paddingEnd="@dimen/small_padding"
+        android:text=""
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="#071C21"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+
+    <TextView
+        android:id="@+id/appwidget_value_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/button_margin_horisontal"
+        android:layout_marginTop="@dimen/button_margin_horisontal"
+        android:layout_marginEnd="@dimen/button_margin_horisontal"
+        android:layout_marginBottom="@dimen/horisontal_line_height"
+        android:alpha="1"
+        android:contentDescription="field_value"
+        android:text="_NaN_"
+        android:textColor="#ffffff"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/widget_button_config"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginBottom="1dp"
+        android:background="@android:drawable/ic_menu_preferences"
+        android:textSize="@dimen/widget_text_small" />
+
+    <Button
+        android:id="@+id/widget_button_main"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginBottom="1dp"
+        android:background="@android:drawable/ic_menu_view" />
+
+</RelativeLayout>

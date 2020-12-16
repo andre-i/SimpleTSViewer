@@ -1,21 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bezwolos.simplets">
+    package="com.bezwolos.simplets"
+
+
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_speedometer"
+        android:icon="@drawable/ic_measurer"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_speedometer"
+        android:roundIcon="@drawable/ic_measurer"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".MyApp"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"
+        android:usesCleartextTraffic="true" >
+
+        <service
+            android:name=".tswidget.SimpleTSrequestWorker"
+            android:enabled="true"
+            android:exported="true">
+
+        </service>
+
+        <receiver android:name=".tswidget.SimpleTSWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/simple_t_s_widget_info" />
+        </receiver>
+
+        <activity android:name=".tswidget.SimpleTSWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +50,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
-    <!--  "@mipmap/ic_launcher_round"
-            "@mipmap/ic_launcher"-->
 
 </manifest>

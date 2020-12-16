@@ -3,10 +3,26 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="list_background_color">#98c6f1</color>
     <color name="horisontal_line_color">#7672a0</color>
     <color name="simple_button_color">#3080ff</color>
     <color name="warning_button_color">#fad0eE</color>
-    <color name="list_light_background">#effaff</color>
     <color name="field_foreground">#143C63</color>
+    <!-- backgrounds -->
+    <color name="list_background_color">#a8e6ff</color>
+    <color name="list_light_background">#fafaff</color>
+    <color name="transparent_background">#00ffffff</color>
+    <color name="radio_yellow">#FBFBB8</color>
+    <color name="radio_blue">#101BEA</color>
+    <color name="radio_green">#08B2AD</color>
+    <color name="radio_white">#FCFBFF</color>
+    <color name="radio_brown">#604010</color>
+    <!--  widget backgrnd  -->
+    <color name="yellow">#40FBFBB8</color>
+    <color name="blue">#40101BEA</color>
+    <color name="green">#4008B2AD</color>
+    <color name="white">#40FCFBFF</color>
+    <color name="brown">#40604010</color>
+    <!--  test color  -->
+    <color name="test">#fffaff</color>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.bezwolos.simplets.show.fields
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
@@ -21,7 +22,6 @@ import com.bezwolos.simplets.MyApp
 import com.bezwolos.simplets.R
 import com.bezwolos.simplets.data.DataHandler
 import com.bezwolos.simplets.data.Field
-import com.bezwolos.simplets.show.fields.dummy.DummyContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -63,9 +63,8 @@ internal class FieldsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View?{
         val that = this
-        // val context = this.context
         val view = inflater.inflate(R.layout.fragment_fields_list, container, false)
         prepareRecyclerView(view.findViewById(R.id.list))
         val watchButton = view.findViewById<FloatingActionButton>(R.id.button_start_watch)
@@ -79,7 +78,7 @@ internal class FieldsFragment : Fragment() {
                 watchButton.alpha = if (isWatch) 0.45F else 0.7F
             } else {
                 if (context != null) {
-                    AlertDialog.Builder(that.context!!)
+                    AlertDialog.Builder(that.requireContext())
                         .setTitle(resources.getText(R.string.warning))
                         .setMessage(resources.getString(R.string.wrong_watch))
                         .setPositiveButton(android.R.string.ok) { _, _ -> }
@@ -128,7 +127,7 @@ internal class FieldsFragment : Fragment() {
             DataHandler.WRONG_REQUEST -> resources.getString(R.string.wrong_request_to_thingspeak)
             else -> resources.getString(R.string.wrong_data_format)
         }
-        AlertDialog.Builder(context!!).setTitle(R.string.wrong_get_data_header)
+        AlertDialog.Builder(requireContext()).setTitle(R.string.wrong_get_data_header)
             .setMessage(Html.fromHtml("<span style='color: #red'> warnMessage </span>\n<br>$warnMessage"))
             .setPositiveButton(android.R.string.ok) { _, _ -> }
             .setCancelable(true)

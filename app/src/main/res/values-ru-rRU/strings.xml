@@ -16,7 +16,6 @@
     <string name="field_measure_label">Единицы измерения</string>
     <string name="is_show_label">Показывать ?</string>
     <string name="enter_channel_id">Введите ID канала</string>
-    <string name="ok_label">ДА</string>
     <string name="no_label">НЕТ</string>
     <string name="cancel_label">СБРОС</string>
     <string name="must_digit">состоит из цифр</string>
@@ -35,9 +34,27 @@
     <string name="delete_channel_header">Подтвердите удаление канала</string>
     <string name="wrong_get_data_header">Ошибка получения данных</string>
     <string name="exit">Выход</string>
-    <string name="frequency_duration">Частота опроса</string>
+    <string name="frequency_duration">Частота опроса(c)</string>
     <string name="start_watch">Запущено обновление данных для канала</string>
     <string name="stop_watch">Обновление данных остановлено</string>
     <string name="wrong_watch">Нет периода обновления данных. Перейдите на экран настройки каналов и установите частоту опроса</string>
     <string name="warning">Внимание!</string>
+    <string name="widget_button_configure">настр</string>
+    <string name="widget_button_app">приложение</string>
+    <string name="channel_props_label">Настройка канала %1$s</string>
+    <string name="api_key_label">Thingspeak read API KEY(необязательно)</string>
+    <string name="connect_proto_label">Протокол связи</string>
+    <string name="wrong_api_key">Thingspeak read API KEY имеет 16 символов введено - \"%1$s\" символов</string>
+    <string name="add_api_key_hint">Для  приватных полей</string>
+    <string name="configure">Настроить</string>
+    <string name="choose_channel">Выберите канал</string>
+    <string name="choose_field">Выберите поле</string>
+    <string name="conf_notify_label">Ввести пороговое значение</string>
+    <string name="conf_update_time">обновлять через ( минуты)</string>
+    <string name="conf_font_size">Размер шрифта</string>
+    <string name="conf_color_choose">Выберите цвет фона</string>
+    <string name="apply_widget">Применить</string>
+    <string name="max_value_alarm">"Превышено максимальное значение. "</string>
+    <string name="min_value_alarm">"Значение меньше минимального! "</string>
+    <string name="value_have">имею значение</string>
 </resources>

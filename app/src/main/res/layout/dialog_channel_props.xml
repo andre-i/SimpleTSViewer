@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/list_margin"
+    android:layout_marginTop="@dimen/vertical_margin">
+
+    <TextView
+        android:id="@+id/channel_props_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/List_margin_top"
+        android:padding="@dimen/list_padding"
+        android:text="@string/channel_props_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:id="@+id/top_space"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_props_label" />
+
+    <TextView
+        android:id="@+id/dialog_channel_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:text="@string/name"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/channel_name_text_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/channel_name_text_edit" />
+
+    <EditText
+        android:id="@+id/channel_name_text_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="@dimen/List_margin_top"
+        android:layout_marginEnd="@dimen/List_margin_top"
+        android:inputType="text"
+        android:maxLength="@integer/ts_api_key_len"
+        android:padding="@dimen/list_padding"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialog_channel_name_label"
+        app:layout_constraintTop_toBottomOf="@+id/top_space" />
+
+    <TextView
+        android:id="@+id/channel_key_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_margin"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:padding="@dimen/list_padding"
+        android:text="@string/api_key_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_name_text_edit" />
+
+    <EditText
+        android:id="@+id/channel_api_key_value"
+        android:layout_width="@dimen/channel_key_value_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/List_margin_top"
+        android:inputType="text"
+        android:padding="@dimen/list_padding"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.297"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_key_label" />
+
+    <TextView
+        android:id="@+id/channel_web_proto_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_margin"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:padding="@dimen/list_padding"
+        android:text="@string/connect_proto_label"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_api_key_value" />
+
+    <Spinner
+        android:id="@+id/channel_web_proto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:padding="@dimen/list_padding"
+        app:layout_constraintStart_toEndOf="@+id/channel_web_proto_label"
+        app:layout_constraintTop_toTopOf="@+id/channel_web_proto_label"
+        app:layout_constraintBottom_toBottomOf="@+id/channel_web_proto_label"
+        android:entries="@array/protos"
+        />
+
+    <TextView
+        android:id="@+id/channel_request_frequency_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_margin"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:padding="@dimen/list_padding"
+        android:text="@string/frequency_duration"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_web_proto_label" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_label" />
+
+    <EditText
+        android:id="@+id/channel_request_frequency_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:inputType="number"
+        android:padding="@dimen/list_padding"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintEnd_toStartOf="@+id/space2"
+        app:layout_constraintStart_toEndOf="@+id/space"
+        app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_label" />
+
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_label" />
+
+    <Button
+        android:id="@+id/channel_button_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginEnd="@dimen/vertical_margin"
+        android:layout_marginBottom="@dimen/vertical_margin"
+        android:background="@drawable/button_rounded_simple"
+        android:text="@string/ok_label"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_value" />
+
+    <Button
+        android:id="@+id/channel_button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginEnd="@dimen/vertical_margin"
+        android:layout_marginBottom="@dimen/vertical_margin"
+        android:background="@drawable/button_rounded_warning"
+        android:text="@string/cancel_label"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/channel_button_ok"
+        app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_value" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

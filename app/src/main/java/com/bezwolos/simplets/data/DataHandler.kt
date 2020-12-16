@@ -53,14 +53,14 @@ internal class DataHandler(database: DatabaseSimpleTS) {
     }
 
 
-    suspend fun getFields(channelId: Long): Array<Field> {
+    suspend fun getFields(channelId: Long, apiKey : String = ""): Array<Field> {
         lastError = ""
         var nFields = getFieldsFromDB(channelId)
         if (nFields.isEmpty()) {
             //  first request to channel
             Log.d(TAG, "can`t get fields for cannel \"$channelId\" : try instantiate it")
             if (db.channelsDao.getChannel(channelId) == null) curChannel = Channel(channelId, "")
-            nFields = fillFieldsFromTS(channelId)
+            nFields = fillFieldsFromTS(channelId,apiKey)
         }
         curFields = nFields
         Log.d(TAG, "from response set array fields size[ ${curFields.size} ]")
@@ -100,9 +100,12 @@ internal class DataHandler(database: DatabaseSimpleTS) {
     /*
         use for first connect to Thingspeak
      */
-    private fun fillFieldsFromTS(channelId: Long, proto: String = "http"): Array<Field> {
+    private fun fillFieldsFromTS(channelId: Long, apiKey : String = "", proto: String = "http"): Array<Field> {
         var mFields = emptyArray<Field>()
-        val url = "${proto}s://api.thingspeak.com/channels/${channelId}/feeds/last.json"
+        val key = if(apiKey.trim().length != 16 ) ""
+                else "?api_key=$apiKey"
+        val url = "${proto}://api.thingspeak.com/channels/${channelId}/feeds/last.json$key"
+        Log.d(TAG, "url req [ $url ]")
         val res = getDataFromTS(url)
         if (res.isEmpty()) {
             Log.w(TAG, "empty response -> Array be empty")
@@ -210,6 +213,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
             curFields = emptyArray()
             return emptyList()
         }
+        val key = if(channel.readTSKey.length != 16) "" else "?api_key=${channel.readTSKey}"
         val url =
             "${channel.protocolName}://api.thingspeak.com/channels/$channelId/feeds/last.json"
         val res = getDataFromTS(url)
@@ -339,4 +343,6 @@ internal class DataHandler(database: DatabaseSimpleTS) {
     fun getCurrentChannel():Channel{
         return curChannel
     }
+
+    suspend fun getChannel(channelId: Long) : Channel? = db.channelsDao.getChannel(channelId)
 }

@@ -15,12 +15,19 @@
     <string name="set_channel_name">channel name</string>
     <string name="set_channel_hint">Set channel name</string>
     <string name="enter_channel_id">Enter channel Id</string>
+    <string name="channel_props_label">Settings for channel %1$s</string>
+    <string name="api_key_label">Thingspeak read API KEY(not required)</string>
+    <string name="connect_proto_label">Connect protocol</string>
+    <string-array name="protos">
+        <item>http</item>
+        <item>https</item>
+    </string-array>
     <!--  field  -->
     <string name="field_name_hint">set name</string>
     <string name="field_measure_label">MeasureUnit</string>
     <!--   label  -->
     <string name="is_show_label">whether show</string>
-    <string name="ok_label">OK</string>
+    <string name="ok_label" translatable="false">OK</string>
     <string name="no_label">NO</string>
     <string name="cancel_label">CANCEL</string>
     <!-- misk  -->
@@ -65,9 +72,33 @@
     <!--  quit  -->
     <string name="exit">Quit</string>
     <!--  autoupdate values -->
-    <string name="frequency_duration">Request frequency</string>
+    <string name="frequency_duration">Request frequency(sec)</string>
     <string name="wrong_watch">For channel cannot set frequency duration. Go to channels screen and set Request Frequency</string>
     <string name="warning">Warning!</string>
     <string name="stop_watch">Stop watch</string>
     <string name="start_watch">Success start watch for channel</string>
+    <!--   widget  -->
+    <string name="configure">Configure</string>
+    <string name="widget_button_configure">conf</string>
+    <string name="widget_button_app">go_app</string>
+    <string name="wrong_api_key">Thingspeak read API KEY have lenght 16 symbols you set \"%1$s\" symbols</string>
+    <string name="add_api_key_hint">Fill for private channel</string>
+    <string name="add_dialog_key_label" translatable="false">API KEY</string>
+    <string name="choose_channel">Choose channel</string>
+    <string name="choose_field">Choose field</string>
+    <string name="conf_notify_label">Enter value for notify</string>
+    <string name="max_val" translatable="false">max</string>
+    <string name="min_val" translatable="false">min</string>
+    <string name="conf_update_time">update time(minutes)</string>
+    <string name="conf_font_size">Font size</string>
+    <string name="conf_color_choose">Choose background color</string>
+    <string name="apply_widget">To apply</string>
+    <string name="max_value_alarm">"Max value exceeded! "</string>
+    <string name="min_value_alarm">"Value below minimum! "</string>
+    <string name="value_have">have value</string>
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
 </resources>
