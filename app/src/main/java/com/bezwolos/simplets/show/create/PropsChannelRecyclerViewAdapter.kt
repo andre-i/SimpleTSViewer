@@ -101,9 +101,9 @@ internal class AddChannelRecyclerViewAdapter(
         for ((n, item) in curFields.withIndex()) {
             var field = fromModel[n]
             var name = item.nameValue.getText().toString()
-            name = if (name.length > 1 ) name else if(field.fieldName.length >1) field.fieldName else field.fieldId
+            name = if (name.length > 0 ) name else if(field.fieldName.length >1) field.fieldName else field.fieldId
             var measure = item.measureValue.getText().toString()
-            measure = if (measure.length > 1) measure else if (field.measureUnit.length > 1) field.measureUnit else ""
+            measure = if (measure.length > 0) measure else if (field.measureUnit.length > 1) field.measureUnit else ""
             val isChecked = item.checkVisible.isChecked
             val channelId = field.channelId
             val fieldId = field.fieldId

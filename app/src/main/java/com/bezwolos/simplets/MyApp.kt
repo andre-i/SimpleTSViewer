@@ -94,10 +94,10 @@ fun hideKeyboard(view: View) {
     imm?.let { it.hideSoftInputFromWindow(view.windowToken, 0) }
 }
 
-//    INTERNAL CONSTANTS
+//    INTERNAL CONSTANTS for widget
 internal const val KEY_WIDGET_VALUES = "GOTTEN_FOR_WIDGET_VALUE"
 internal const val SIMPLE_TS_WIDGET_UPDATE = "SimpleTSWidget.HAS_UPDATE_WIDGET"
-internal const val URL_AS_STRING = "SimpleTSWidget.URL_AS_STRING"
 internal const val CALL_FROM_WIDGET = "SimpleTSWidget.CALL_FROM_WIDGET"
-
+internal const val URL_AS_STRING = "SimpleTSWidget.URL_AS_STRING"
+internal const val SIMPLE_TS_WIDGET_TAG = "SimpleTSWidget.TAG_FOR_WIDGET_id_"
 

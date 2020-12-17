@@ -213,9 +213,9 @@ internal class DataHandler(database: DatabaseSimpleTS) {
             curFields = emptyArray()
             return emptyList()
         }
-        val key = if(channel.readTSKey.length != 16) "" else "?api_key=${channel.readTSKey}"
+        val apiKey = if(channel.readTSKey.length != 16) "" else "?api_key=${channel.readTSKey}"
         val url =
-            "${channel.protocolName}://api.thingspeak.com/channels/$channelId/feeds/last.json"
+            "${channel.protocolName}://api.thingspeak.com/channels/$channelId/feeds/last.json$apiKey"
         val res = getDataFromTS(url)
         if (res.isEmpty()) {
             Log.w(TAG, "empty response -> Array be empty")

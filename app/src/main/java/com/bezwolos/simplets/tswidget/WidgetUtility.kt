@@ -3,14 +3,18 @@ package com.bezwolos.simplets.tswidget
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.work.*
 import com.bezwolos.simplets.R
+import com.bezwolos.simplets.SIMPLE_TS_WIDGET_TAG
 import com.bezwolos.simplets.URL_AS_STRING
 import java.lang.NumberFormatException
+import java.util.concurrent.TimeUnit
 
 internal class WidgetUtility {
     private val TAG = "simplets.WidUtil"
@@ -87,47 +91,71 @@ internal class WidgetUtility {
      on change settings reconfigure widget properties
      */
     internal fun startAutoUpdate(context: Context, widgetId: Int) {
+        if (widgetId < 1) {
+            Log.w(TAG, "Can`t start for execute widgetId=0")
+        }
         val settings: SimpleTSWidget.WidgetSettings = loadWidgetSettingsPref(context, widgetId)
         Log.i(TAG, "startAutoupdate() have settings ${settings.toString()}")
-        val updateTime = settings.updateTime * 60000L //   updateTime in millis
- /*       //  if exist old intent be cancel
-        val oldIntent = Intent(context, SimpleTSService::class.java)
-        val oldPendingIntent = PendingIntent.getService(
-            context,
-            widgetId,
-            oldIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
+        val reqURL = settings.reqUrl
+        val workTag = SIMPLE_TS_WIDGET_TAG + widgetId
+        //  cancel old work if exist
+        WorkManager.getInstance(context).cancelAllWorkByTag(workTag)
+        // prepare data for worker
+        val data = Data.Builder()
+            .putString(URL_AS_STRING, settings.reqUrl)
+            .putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            .build()
+        //  prepare work request
+        val periodicWorkRequest = PeriodicWorkRequest.Builder(
+            SimpleTSrequestWorker::class.java,
+            settings.updateTime,
+            TimeUnit.MINUTES,
+            settings.updateTime - 5,
+            TimeUnit.MINUTES
         )
-                TODO// uncomment code with NOTE below
-        */
-        // set to alarm manager new intent
-        val newIntent = Intent(context, SimpleTSrequestWorker::class.java)
-        newIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        newIntent.putExtra(URL_AS_STRING, settings.reqUrl)
-        val curPendingIntent = PendingIntent.getService(
-            context,
-            0,
-            newIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+        periodicWorkRequest.addTag(workTag)
+        //  update on start
+        val workRequest = OneTimeWorkRequestBuilder<SimpleTSrequestWorker>()
+            .setInputData(data)
+            .setInitialDelay(5, TimeUnit.SECONDS)
+            .build()
+        WorkManager.getInstance(context).enqueue(workRequest)
+        //  set update by time
+        periodicWorkRequest.setInputData(data)
+        Log.d(
+            TAG,
+            "try start work witch param [ widgetId=${data.getString(URL_AS_STRING)} URL=${data.getInt(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                0
+            )} ]"
         )
-        with(context.getSystemService(Context.ALARM_SERVICE) as AlarmManager) {
-            /*  NOTE : uncomment if uncomment code before in this method
-            Log.d(TAG, "delete old pendingIntent")
-            cancel(oldPendingIntent)
-             */
-            Log.d(TAG, "set new pendingIntent")
-            setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 4000, updateTime, curPendingIntent)
-        }
-        curPendingIntent.send()
+        WorkManager.getInstance(context).enqueue(periodicWorkRequest.build())
     }
 
-    internal fun updateImmediately(context: Context, widgetId: Int){
+    internal fun updateImmediately(context: Context, widgetId: Int) {
         Log.d(TAG, "immediately start update")
-        val  settings: SimpleTSWidget.WidgetSettings = loadWidgetSettingsPref(context, widgetId)
-        val intent = Intent(context, SimpleTSrequestWorker::class.java)
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        intent.putExtra(URL_AS_STRING, settings.reqUrl)
-        context.startService(intent)
+        if (widgetId < 1) {
+            Log.w(TAG, "Can`t start for execute widgetId=0")
+        }
+        val settings: SimpleTSWidget.WidgetSettings = loadWidgetSettingsPref(context, widgetId)
+        // prepare data for worker
+        val data = Data.Builder()
+            .putString(URL_AS_STRING, settings.reqUrl)
+            .putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            .build()
+        val workRequest = OneTimeWorkRequestBuilder<SimpleTSrequestWorker>()
+            .setInputData(data)
+            .setInitialDelay(1, TimeUnit.SECONDS)
+            .build()
+        Log.d(
+            TAG,
+            "try start work witch param [ widgetId=${data.getString(URL_AS_STRING)} URL=${data.getInt(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                0
+            )} ]"
+        )
+        WorkManager.getInstance(context).enqueue(workRequest)
     }
 
 }
+

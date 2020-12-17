@@ -2,9 +2,12 @@ package com.bezwolos.simplets.tswidget
 
 import android.app.Service
 import android.appwidget.AppWidgetManager
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import com.bezwolos.simplets.KEY_WIDGET_VALUES
 import com.bezwolos.simplets.URL_AS_STRING
 import com.bezwolos.simplets.data.DataHandler
@@ -13,65 +16,52 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-
-class SimpleTSrequestWorker : Service() {
-    private val TAG = "simplets.WidgSrv"
+class SimpleTSrequestWorker(appContext: Context, workerParams: WorkerParameters): Worker(appContext, workerParams)  {
+    private val TAG = "simplets.WidgWork"
 
     private val job = SupervisorJob()
     private var isBusy = false
+    private val workerParams = workerParams
+    private val context = appContext
 
-    override fun onBind(intent: Intent): IBinder {
-        TODO("Return the communication channel to the service.")
-    }
-
-
-    override fun onDestroy() {
-        //  close(free) resources
-        job.cancel()
-        Log.d(TAG, "call DESTROY service")
-        super.onDestroy()
-    }
-
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "Service onStart...")
+    override fun doWork(): Result {
+        Log.d(TAG, " doWork()")
         // if service in work -> do nothing
         if(isBusy) {
             Log.d(TAG, "service Busy - do nothing")
-            return Service.START_NOT_STICKY
+            return Result.success()
         }
         isBusy = true
         val startTime = System.currentTimeMillis()
-        val extra = intent?.extras
-        if (intent == null || extra == null) {
-            Log.w(TAG, "onStartCommand get null value(s)")
-            stopSelf()
-            return Service.START_NOT_STICKY
-        }
-        val requestURL = extra.getString(URL_AS_STRING, "")
-        val widgetId = extra.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
-        Log.i(TAG, "service execute: request=$requestURL  widgetId=$widgetId")
+        val workData = getInputData()
+        val requestURL = workData.getString(URL_AS_STRING) ?: ""
+        val widgetId = workData.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
+        Log.i(TAG, "worker execute: request=$requestURL  widgetId=$widgetId")
         if (requestURL.isEmpty() || widgetId == 0) {
-            Log.w(TAG, "Exit on Get empty param")
-            return Service.START_NOT_STICKY
+            Log.w(TAG, "WARNING !!!   Exit on Get empty param")
+            return Result.failure()
         }
-        GlobalScope.launch(Dispatchers.IO + job) {
+        try {
             val value = getNewValue(requestURL)
             Log.d(TAG, "Get from server value=$value")
             val intent = Intent("android.appwidget.action.APPWIDGET_UPDATE")
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
             intent.putExtra(KEY_WIDGET_VALUES, value)
-            sendBroadcast(intent)
+            context.sendBroadcast(intent)
             Log.d(TAG, "service execute work and wait for pause(60s)")
-            while((System.currentTimeMillis() - startTime) < 60000)delay(5)
-            isBusy = false
             Log.d(TAG, "call Service stopSelf() Ready for next work")
-            stopSelf(startId)
+        }catch (e: Exception){
+            Log.e(TAG, "doWork() catch err=${e.message}", e)
+            return Result.failure()
         }
-        return Service.START_STICKY
+        GlobalScope.launch {
+            while ((System.currentTimeMillis() - startTime) < 60000) delay(5)
+            isBusy = false
+        }
+        return Result.success()
     }
 
-    private suspend fun getNewValue(_url: String): String {
+    private fun getNewValue(_url: String): String {
         val url = URL(_url)
         val response = StringBuilder("")
         Log.d(TAG, "Start HTTPS request")

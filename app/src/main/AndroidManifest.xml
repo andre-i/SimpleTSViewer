@@ -18,12 +18,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
 
-        <service
-            android:name=".tswidget.SimpleTSrequestWorker"
-            android:enabled="true"
-            android:exported="true">
 
-        </service>
 
         <receiver android:name=".tswidget.SimpleTSWidget">
             <intent-filter>
@@ -34,6 +29,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/simple_t_s_widget_info" />
         </receiver>
+
 
         <activity android:name=".tswidget.SimpleTSWidgetConfigureActivity">
             <intent-filter>
