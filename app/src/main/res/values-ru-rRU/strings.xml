@@ -34,7 +34,7 @@
     <string name="delete_channel_header">Подтвердите удаление канала</string>
     <string name="wrong_get_data_header">Ошибка получения данных</string>
     <string name="exit">Выход</string>
-    <string name="frequency_duration">Частота опроса(c)</string>
+    <string name="frequency_duration">Частота опроса(cек)</string>
     <string name="start_watch">Запущено обновление данных для канала</string>
     <string name="stop_watch">Обновление данных остановлено</string>
     <string name="wrong_watch">Нет периода обновления данных. Перейдите на экран настройки каналов и установите частоту опроса</string>
@@ -57,4 +57,21 @@
     <string name="max_value_alarm">"Превышено максимальное значение. "</string>
     <string name="min_value_alarm">"Значение меньше минимального! "</string>
     <string name="value_have">имею значение</string>
+    <!--  chart  -->
+    <string name="chart_hour_label_text">Часы</string>
+    <string name="chart_days_label_text">Дни</string>
+    <string name="chart_fragment_title">Канал %1$s</string>
+    <string name="chart_name_label">Диаграмма %1$s</string>
+    <string name="chart_choose_button_text">Период</string>
+    <string name="show_chart">Показать диаграмму</string>
+    <string name="chart_choose_dialog_label">Выберите канал и поле</string>
+    <string name="chart_drop_null">значения null пропущены</string>
+    <string name="dialog_chooser_title">Выберите период</string>
+    <string name="long_period">Очень большой период. Не могу отобразить.</string>
+    <string name="start_great_end">Ошибка! Начальная дата больше конечной.</string>
+    <string name="empty_date">Дата не выбрана. Нечего показывать.</string>
+    <string name="chooser_start_date_button_text">Начало</string>
+    <string name="chooser_end_date_button_text">Окончание</string>
+    <string name="choose_wrong_date">Выбрано неверное значение даты</string>
+    <string name="chart_on_empty_mess">Получен пустой ответ. Возможно выбран неверный интервал.</string>
 </resources>

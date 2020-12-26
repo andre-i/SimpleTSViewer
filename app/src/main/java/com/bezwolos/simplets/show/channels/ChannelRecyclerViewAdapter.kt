@@ -61,6 +61,7 @@ internal class ChannelRecyclerViewAdapter(
         holder.edit.setOnClickListener{
             makeAction(EDIT, item.channelId)
         }
+
        holder.del.setOnClickListener{
            makeAction(DELETE, item.channelId)
        }

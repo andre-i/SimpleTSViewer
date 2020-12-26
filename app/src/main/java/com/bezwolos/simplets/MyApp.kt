@@ -2,11 +2,13 @@ package com.bezwolos.simplets
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.room.Room
 import com.bezwolos.simplets.data.DataHandler
 import com.bezwolos.simplets.data.db.DatabaseSimpleTS
+import com.bezwolos.simplets.tswidget.SimpleTSWidget
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -98,6 +100,7 @@ fun hideKeyboard(view: View) {
 internal const val KEY_WIDGET_VALUES = "GOTTEN_FOR_WIDGET_VALUE"
 internal const val SIMPLE_TS_WIDGET_UPDATE = "SimpleTSWidget.HAS_UPDATE_WIDGET"
 internal const val CALL_FROM_WIDGET = "SimpleTSWidget.CALL_FROM_WIDGET"
+internal const val WIDGET_ID = "SimpleTSWidget.WIDGET_ID"
 internal const val URL_AS_STRING = "SimpleTSWidget.URL_AS_STRING"
 internal const val SIMPLE_TS_WIDGET_TAG = "SimpleTSWidget.TAG_FOR_WIDGET_id_"
 

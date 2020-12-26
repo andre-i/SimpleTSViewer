@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.get
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.bezwolos.simplets.MainActivity
@@ -21,8 +20,6 @@ import com.bezwolos.simplets.data.Channel
 import com.bezwolos.simplets.data.DataHandler
 import com.bezwolos.simplets.data.Field
 import com.bezwolos.simplets.hideKeyboard
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.dialog_channel_props.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -67,7 +64,7 @@ internal class PropsChannelFragment : Fragment() {
         Log.d(TAG, "On create PropsCF have channelID=$channelId  apiKEY=$apiKey")
         if (channelId == 0L) showChannelFragment()  //  if not channel
         dHandler = (activity?.application as MyApp).getDataHandler()
-        fields = dHandler.getFields()
+        fields = dHandler.getFieldsOnCreate()
         //  viewModel
         viewModel = ViewModelProvider(this).get(PropsViewModel::class.java)
         viewModel.setFields(fields)

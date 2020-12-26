@@ -55,6 +55,7 @@
     <string name="props_fragment_title">Tune channel %1$s</string>
     <string name="fields_fragment_title">Show channel : %1$s</string>
     <string name="help_fragment_title">SimpleTS : Help</string>
+    <string name="chart_fragment_title">Channel %1$s</string>
 
 
     <!--   for test -->
@@ -96,9 +97,35 @@
     <string name="max_value_alarm">"Max value exceeded! "</string>
     <string name="min_value_alarm">"Value below minimum! "</string>
     <string name="value_have">have value</string>
-    <!-- Preference Titles -->
-
-    <!-- Messages Preferences -->
-
-    <!-- Sync Preferences -->
+    <string name="notify_channel_name" translatable="false">channelOutOfBoundsNotify</string>
+    <string name="channel_description" translatable="false">notification channel</string>
+    <!--   chart  -->
+    <string-array name="hour_counts">
+        <item>1</item>
+        <item>2</item>
+        <item>6</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="day_counts">
+        <item>1</item>
+        <item>3</item>
+        <item>10</item>
+        <item>30</item>
+    </string-array>
+    <string name="chart_choose_dialog_label">Choose channel and field</string>
+    <string name="chart_hour_label_text">Hours</string>
+    <string name="chart_days_label_text">Days</string>
+    <string name="chart_name_label">Chart for %1$s</string>
+    <string name="chart_choose_button_text">Period</string>
+    <string name="show_chart">Show chart</string>
+    <string name="chart_drop_null">null values discarded</string>
+    <!--  dialog choose period -->
+    <string name="dialog_chooser_title">Choose watch period</string>
+    <string name="long_period">Sorry. Period too long.</string>
+    <string name="start_great_end">WARN :  End date must be great than start date</string>
+    <string name="empty_date">Empty data - nothing show</string>
+    <string name="chooser_end_date_button_text">End</string>
+    <string name="chooser_start_date_button_text">Start</string>
+    <string name="choose_wrong_date">Choose wrong date value</string>
+    <string name="chart_on_empty_mess">Get empty data. May be choosed wrong interval.</string>
 </resources>

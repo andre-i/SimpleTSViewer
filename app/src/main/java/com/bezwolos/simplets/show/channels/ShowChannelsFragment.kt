@@ -7,7 +7,6 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,7 +22,6 @@ import com.bezwolos.simplets.show.ChannelsActionListener
 import com.bezwolos.simplets.show.create.PropsChannelFragment
 import com.bezwolos.simplets.show.fields.FieldsFragment
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
@@ -37,7 +35,7 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
     private var columnCount = 1
     private lateinit var channels: Array<Channel>
 
-    lateinit var viewModel: ShowChannelViewModel
+    private lateinit var viewModel: ShowChannelViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +73,7 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+       // inflater.inflate(R.menu.show_chart_menu,menu)
         inflater.inflate(R.menu.show_channel_menu, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
@@ -86,7 +85,11 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
             Log.d(TAG, "tap on 'add_channel'")
             (activity as MainActivity).showDialog()
         }
-        return true
+/*        if(item.itemId == R.id.show_chart){
+            //findNavController().navigate(R.id.action_to_Chart)
+            ChartChooseDialog().show(this.childFragmentManager,"chartChooseChannel")
+        }*/
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -139,12 +142,12 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
      */
     private fun deleteChannel(channelId: Long) {
         Log.i(TAG, "delete channel $channelId")
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             with((activity?.application as MyApp).getDataHandler()) {
                 deleteChannel(channelId)
                 refreshChannelsFromDB()
             }
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 findNavController().navigate(R.id.action_to_Channels)
             }
         }
@@ -169,12 +172,12 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
     }
 
     private fun editChannel(channelId: Long) {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             with((activity?.application as MyApp).getDataHandler()) {
-                getFields(channelId)
+                getFieldsOnCreate(channelId)
                 getChannelName(channelId)
             }
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 findNavController().navigate(
                     R.id.action_to_Props,
                     Bundle().apply() { putLong(PropsChannelFragment.ARG_CHANNEL_ID, channelId) })

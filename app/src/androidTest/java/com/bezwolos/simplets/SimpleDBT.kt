@@ -169,7 +169,7 @@ class SimpleDBT {
         val old = db.channelsDao.getChannel(id_1)?.isChecked
         Log.d(TAG, "old val -$old")
         assertEquals(old, false)
-        dataHandler.makeChannelVisible(id_1)
+       // dataHandler.makeChannelVisible(id_1)
         val new = db.channelsDao.getChannel(id_1)?.isChecked
         Log.d(TAG, "new val -$new")
         assertNotNull(new)

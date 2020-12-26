@@ -64,9 +64,16 @@ dependencies {
     // Kotlin + coroutines
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
+    //  notify support
+    implementation "com.android.support:support-compat:30.0.0"
+
+
 
     // Klaxon
     // implementation "com.beust:klaxon:$klaxon_version"
+
+    // Graph
+    implementation "com.jjoe64:graphview:$graphview_version"
 
     // Test
     testImplementation 'junit:junit:4.12'

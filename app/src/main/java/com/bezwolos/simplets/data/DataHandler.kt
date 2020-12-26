@@ -44,7 +44,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
         const val NETWORKING_ERROR = "connect_error"
     }
 
-    fun getFields(): Array<Field> = curFields
+    fun getFieldsOnCreate(): Array<Field> = curFields
 
     fun getLastError(): String {
         val cur = lastError
@@ -53,7 +53,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
     }
 
 
-    suspend fun getFields(channelId: Long, apiKey : String = ""): Array<Field> {
+    suspend fun getFieldsOnCreate(channelId: Long, apiKey : String = ""): Array<Field> {
         lastError = ""
         var nFields = getFieldsFromDB(channelId)
         if (nFields.isEmpty()) {
@@ -157,8 +157,7 @@ internal class DataHandler(database: DatabaseSimpleTS) {
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error ON GET DATA FROM SERVER ", e)
-            Log.w(TAG, "Error is : [${e.toString()}]")
+            Log.e(TAG, "Error ON GET DATA FROM SERVER [ ${e.toString()} ]", e)
             lastError = NETWORKING_ERROR
             waitForSiteAnswer = false
             return emptyList()
@@ -248,6 +247,10 @@ internal class DataHandler(database: DatabaseSimpleTS) {
             )
             else db.fieldsDao.updateField(item)
         }
+    }
+
+    suspend fun getField(channelId : Long, fieldId : String) : Field{
+       return db.fieldsDao.getField(channelId, fieldId) ?: Field(0, "")
     }
 
     /*                            write or change channel

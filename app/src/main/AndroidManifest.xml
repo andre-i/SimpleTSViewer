@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bezwolos.simplets"
-
-
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.bezwolos.simplets">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- android:usesCleartextTraffic="true" -->
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -16,10 +15,9 @@
         android:roundIcon="@drawable/ic_measurer"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true" >
-
-
-
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <!--  widget -->
         <receiver android:name=".tswidget.SimpleTSWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -29,21 +27,18 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/simple_t_s_widget_info" />
         </receiver>
-
-
-        <activity android:name=".tswidget.SimpleTSWidgetConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
-
+        <!--   activity  -->
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".tswidget.SimpleTSWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
     </application>

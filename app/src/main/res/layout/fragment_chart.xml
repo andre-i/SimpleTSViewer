@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/chart_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:textAlignment="center"
+        android:textSize="@dimen/header_text_size"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/chart_hour_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:text="@string/chart_hour_label_text"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintEnd_toStartOf="@+id/chart_hour_spinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart_name" />
+
+    <Spinner
+        android:id="@+id/chart_hour_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:entries="@array/hour_counts"
+        app:layout_constraintEnd_toStartOf="@+id/chart_day_label"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chart_hour_label"
+        app:layout_constraintTop_toBottomOf="@+id/chart_name" />
+
+    <TextView
+        android:id="@+id/chart_day_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:text="@string/chart_days_label_text"
+        android:textSize="@dimen/label_text_size"
+        app:layout_constraintEnd_toStartOf="@+id/chart_day_spinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chart_hour_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/chart_name" />
+
+    <Spinner
+        android:id="@+id/chart_day_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:entries="@array/day_counts"
+        app:layout_constraintEnd_toStartOf="@+id/chart_period_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chart_day_label"
+        app:layout_constraintTop_toBottomOf="@+id/chart_name" />
+
+
+    <TextView
+        android:id="@+id/chart_period_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_margin"
+        android:background="@drawable/button_rounded_simple"
+        android:text="@string/chart_choose_button_text"
+        android:textSize="@dimen/button_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/chart_day_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/chart_name" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/list_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart_period_button" />
+    <!--
+           -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

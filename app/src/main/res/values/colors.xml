@@ -22,7 +22,9 @@
     <color name="green">#4008B2AD</color>
     <color name="white">#40FCFBFF</color>
     <color name="brown">#40604010</color>
+    <!--  Chart colors -->
+    <color name="chart_normal_color">#4050e0</color>
+    <color name="chart_with_wrong">#c03050</color>
     <!--  test color  -->
     <color name="test">#fffaff</color>
-
 </resources>

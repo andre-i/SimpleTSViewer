@@ -28,6 +28,8 @@ import kotlinx.coroutines.launch
 class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedListener {
     private val TAG = "simplets.tsWidget.Conf"
 
+    private var isUpdate = false
+
     private var widgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private lateinit var db: DatabaseSimpleTS
 
@@ -53,8 +55,11 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
     // need if user can`t choose new color
     private var oldColor = ""
 
+    private lateinit var context: Context
 
-    public override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+
+    public override fun onCreateView(name: String, _context: Context, attrs: AttributeSet): View? {
+        context = _context
         return super.onCreateView(name, context, attrs)
 
     }
@@ -76,6 +81,7 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
             widgetId = extras.getInt(
                 AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID
             )
+            isUpdate = extras.getBoolean(SIMPLE_TS_WIDGET_UPDATE, false)
         }
         Log.d(TAG, "widgetId = $widgetId")
         // If this activity was started with an intent without an app widget ID, finish with an error.
@@ -85,13 +91,12 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
         }
         GlobalScope.launch(Dispatchers.IO) {
             db = (this@SimpleTSWidgetConfigureActivity.applicationContext as MyApp).getDataBase()
-
-            bindViews()
-            // note - on empty Shared preferences return default settings
-            val oldSettings = loadWidgetSettingsPref(this@SimpleTSWidgetConfigureActivity, widgetId)
-            fillValues(oldSettings)
         }
         //  there must be apply changes for widgets
+        bindViews()
+        // note - on empty Shared preferences return default settings
+        val oldSettings = loadWidgetSettingsPref(this@SimpleTSWidgetConfigureActivity, widgetId)
+        fillValues(oldSettings)
 
     }
 
@@ -108,20 +113,27 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
 
     private var onClickListener = View.OnClickListener {
         try {
-            Log.d(TAG, "Start on click handler(store and redraw widget")
+            Log.v(TAG, "Start on click handler(store and redraw widget")
             // When the button is clicked, store widgetSettings
             Log.d(TAG, "save settings widgetId = $widgetId")
-            saveNewSettings();
-           // emit broadcast for enter new settings
-            val messIntent = Intent("android.appwidget.action.APPWIDGET_UPDATE")
-            messIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-            messIntent.putExtra(SIMPLE_TS_WIDGET_UPDATE, true)
-            sendBroadcast(messIntent)
-           // Make sure we pass back the original widgetId
-            val resultValue = Intent()
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-            setResult(RESULT_OK, resultValue)
-            finish()
+            GlobalScope.launch(Dispatchers.IO) {
+               // Log.v(TAG, "start make URL")
+                val reqUrl = makeRequestUrl()
+                GlobalScope.launch(Dispatchers.Main) {
+                    saveNewSettings(context, reqUrl)
+                    if (isUpdate == false) {
+                       // Log.d(TAG, "start call finish()")
+                        // Make sure we pass back the original widgetId
+                        val resultValue = Intent()
+                        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+                        setResult(RESULT_OK, resultValue)
+                        finish()
+                    } else {
+                        setResult(RESULT_OK)
+                        finish()
+                    }
+                }
+            }
         } catch (e: Exception) {
             Log.e(TAG, "On click in widget e=${e.message}", e)
         }
@@ -129,20 +141,17 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
 
     /* return api key or empty string if key not found */
     private fun getChannelProp(channelId: String): Pair<String, String> {
-        isCompleted = false
         var pair = Pair("http", "")
-        GlobalScope.launch(Dispatchers.IO) {
-            val channel = db.channelsDao.getChannel(channelId.toLong())
-            if (channel != null) pair = Pair(channel.protocolName, channel.readTSKey)
-            isCompleted = true
-        }
-        while (isCompleted == false) 1
+        val channel = db.channelsDao.getChannel(channelId.toLong())
+        if (channel != null) pair = Pair(channel.protocolName, channel.readTSKey)
         return pair
     }
 
-    private fun makeRequestUrl(): String {
+    private suspend fun makeRequestUrl(): String {
         val channelId = channelsCombo[channels.selectedItemPosition].first.toString()
+     //   Log.v(TAG, "start get channel prop for $channelId")
         val channelProp = getChannelProp(channelId)
+     //   Log.v(TAG, "Start fill field from channel prop")
         val proto = channelProp.first
         val apiKey = if (channelProp.second == "") "" else "?api_key=${channelProp.second}"
         val fieldId = fieldsCombo[fields.selectedItemPosition].first
@@ -153,9 +162,7 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
         get values from appropriate fields if needed replace on default values
         and save to shared preferences
      */
-    private fun saveNewSettings(): SimpleTSWidget.WidgetSettings {
-        val context = this@SimpleTSWidgetConfigureActivity
-        val reqUrl = makeRequestUrl()
+    private fun saveNewSettings(context: Context, reqUrl: String): SimpleTSWidget.WidgetSettings {
         val fieldName =
             if (fieldsCombo[fields.selectedItemPosition].second.length < 1) fieldsCombo[fields.selectedItemPosition].first
             else fieldsCombo[fields.selectedItemPosition].second
@@ -201,7 +208,13 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
             fSize,
             checkedCol
         )
+        Log.d(TAG, "Start write new settings")
         saveWidgetSettingsPref(context, newSettings, widgetId)
+        Log.v(TAG, "Ends of save process")
+        Log.v(TAG, "Call start autoUpdate ")
+        WidgetUtility().startAutoUpdate(context, widgetId)
+        Log.v(TAG, "Start update")
+        WidgetUtility().updateImmediately(context, widgetId)
         return newSettings
     }
 
@@ -266,7 +279,7 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
         else "0"
         Log.d(TAG, "fillValues()  channelId = $channelId")
         for ((n, pair) in channelsCombo.withIndex()) {
-            Log.d(TAG, "old channelId = $channelId")
+            Log.v(TAG, "old channelId = $channelId")
             if (pair.first ==
                 channelId.toLong()
             ) pos = n
@@ -316,7 +329,7 @@ class SimpleTSWidgetConfigureActivity : Activity(), AdapterView.OnItemSelectedLi
     private fun tuneFieldSpinner(channelId: Long) {
         GlobalScope.launch(Dispatchers.IO) {
             val all = db.fieldsDao.getChannelFields(channelId)
-            Log.d(TAG, "channel fields size=${all.size}")
+            Log.v(TAG, "channel fields size=${all.size}")
             // first in triple - fieldId, second - fieldName, third - measureUnit
             fieldsCombo = Array<Triple<String, String, String>>(all.size) { Triple("", "", "") }
             var names = Array<String>(all.size) { "" }
@@ -442,7 +455,7 @@ internal fun loadWidgetSettingsPref(
 ): SimpleTSWidget.WidgetSettings {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0)
     val asString = prefs.getString(PREFIX_SETTINGS_KEY + widgetId, "") ?: ""
-    Log.d("simplets.loadWdgSetPref", "on restore have [ $asString ]")
+    Log.v("simplets.loadWdgSetPref", "on restore have [ $asString ]")
     val old = SimpleTSWidget.WidgetSettings()
     if (asString.trim().isEmpty()) return old  // on first request return the empty settings
     val arr = asString.split("&")
@@ -473,7 +486,7 @@ internal fun loadWidgetSettingsPref(
     Remove the prefix from the SharedPreferences object for this widget
  */
 internal fun deleteWidgetSettings(context: Context, widgetId: Int) {
-    Log.d("simplets.widgetSettings", "delete settings for [ $widgetId ]")
+    Log.v("simplets.widgetSettings", "delete settings for [ $widgetId ]")
     val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
     prefs.remove(PREFIX_SETTINGS_KEY + widgetId)
     prefs.apply()

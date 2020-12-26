@@ -11,22 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bezwolos.simplets.MainActivity
 import com.bezwolos.simplets.MyApp
 import com.bezwolos.simplets.R
 import com.bezwolos.simplets.data.DataHandler
 import com.bezwolos.simplets.data.Field
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  * A fragment representing a list of Items.
@@ -67,26 +60,6 @@ internal class FieldsFragment : Fragment() {
         val that = this
         val view = inflater.inflate(R.layout.fragment_fields_list, container, false)
         prepareRecyclerView(view.findViewById(R.id.list))
-        val watchButton = view.findViewById<FloatingActionButton>(R.id.button_start_watch)
-        watchButton.setOnClickListener {
-            Log.d(TAG, "Try Start watch of channel")
-            isWatch = !isWatch
-            if (viewModel.flipWatch(isWatch)) {
-                if(isWatch)Toast.makeText(context, resources.getText(R.string.start_watch), Toast.LENGTH_SHORT).show()
-                else Toast.makeText(context, resources.getText(R.string.stop_watch), Toast.LENGTH_SHORT).show()
-                watchButton.setImageResource(if (isWatch) R.drawable.ic_watch_no_color else R.drawable.ic_play_button)
-                watchButton.alpha = if (isWatch) 0.45F else 0.7F
-            } else {
-                if (context != null) {
-                    AlertDialog.Builder(that.requireContext())
-                        .setTitle(resources.getText(R.string.warning))
-                        .setMessage(resources.getString(R.string.wrong_watch))
-                        .setPositiveButton(android.R.string.ok) { _, _ -> }
-                        .setIcon(android.R.drawable.ic_dialog_alert).show()
-                }
-            }
-            Log.d(TAG, "Watch for channel Started")
-        }
         return view
     }
 
@@ -129,7 +102,9 @@ internal class FieldsFragment : Fragment() {
         }
         AlertDialog.Builder(requireContext()).setTitle(R.string.wrong_get_data_header)
             .setMessage(Html.fromHtml("<span style='color: #red'> warnMessage </span>\n<br>$warnMessage"))
-            .setPositiveButton(android.R.string.ok) { _, _ -> }
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                findNavController().navigate(R.id.action_to_Channels)
+            }
             .setCancelable(true)
             .setIcon(android.R.drawable.ic_dialog_alert).show()
     }

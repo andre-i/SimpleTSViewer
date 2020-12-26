@@ -8,15 +8,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.util.Log
 import android.util.TypedValue.COMPLEX_UNIT_SP
 import android.widget.RemoteViews
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.WorkManager
 import com.bezwolos.simplets.*
 import com.bezwolos.simplets.KEY_WIDGET_VALUES
 import com.bezwolos.simplets.MainActivity
 import com.bezwolos.simplets.SIMPLE_TS_WIDGET_UPDATE
 import com.bezwolos.simplets.URL_AS_STRING
+import com.bezwolos.simplets.chart.CHANNEL_ID
 import java.lang.StringBuilder
 
 //   internal constants
@@ -30,14 +33,16 @@ class SimpleTSWidget : AppWidgetProvider() {
     private val TAG = "simplets.Widget"
 
 
-    private var currentValue = "-?-"
+    private var currentValue = "--"
 
 
-    private val UPDATE_SETTINGS = "update_on_change_settings"
-    private val UPDATE = "update_value"
-    private val NO_ACTION = "update_nothing_action"
-    private val SET_VALUE = "set_gotten_value"
-    private val UPDATE_VALUE = "update_value_action"
+    private val UPDATE_SETTINGS = "UPDATE_SETTINGS "
+    private val UPDATE = "UPDATE"
+    private val NO_ACTION = "NO_ACTION"
+    private val SET_VALUE = "SET_VALUE"
+    private val UPDATE_ON_CLICK = "UPDATE_ON_CLICK"
+    private val DELLETE_WIDG = "DELETE_WIDGET"
+    private val DISABLED_ALL = "DISABLED_ALL"
 
     override fun onUpdate(
         context: Context,
@@ -57,26 +62,33 @@ class SimpleTSWidget : AppWidgetProvider() {
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         // When the user deletes the widget, delete the preference associated with it.
-        Log.d(TAG, "call \"onDeleted\"")
+        Log.d(TAG, "onDeleted()")
         if (appWidgetIds.isEmpty()) return
         for (widgetId in appWidgetIds) {
             deleteWidgetSettings(context, widgetId)
             //  kill work for deleted widget
-            Log.v(TAG, "Delete work for widget $widgetId")
-            WorkManager.getInstance(context).cancelAllWorkByTag(SIMPLE_TS_WIDGET_TAG + widgetId)
+            Log.d(TAG, "Start Delete work for widget $widgetId")
+            with(WorkManager.getInstance(context)) {
+                cancelAllWorkByTag(SIMPLE_TS_WIDGET_TAG + widgetId)
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.d(TAG, "Delete channel for notifications on delete widget")
+                with(NotificationManagerCompat.from(context)) {
+                    deleteNotificationChannel(widgetId.toString())
+                }
+            }
         }
     }
 
     override fun onEnabled(context: Context) {
         // Enter relevant functionality for when the first widget is created
         Log.d(TAG, "Create first widget")
-
     }
 
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
         Log.d(TAG, "onDisabled()")
-        if (deleteAllWidgetSettings(context)) Log.v(
+        if (deleteAllWidgetSettings(context)) Log.d(
             TAG,
             "On disabled delete all settings"
         ) else Log.w(TAG, "Err - can`t delete settings on disabled widgets")
@@ -85,33 +97,67 @@ class SimpleTSWidget : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-        Log.i(
-            TAG,
-            "onReceive() ${if (context == null) "context = null" else ""} ${if (intent == null) " intent == null" else ""} "
-        )
+        logOnReseive(context, intent)
         if (context == null || intent == null) {
-            Log.d(TAG, " exit on some == null")
+            Log.i(TAG, " exit on some == null")
             return
         }
-        Log.d(TAG, "call onReceive() get Intent ${intent.toString()}")
-        val wAction = getIntentTarget(intent)       //first - action_name, second - widgetId
-        Log.d(TAG, "get intent with widgetId=${wAction.second} action - ${wAction.first} ")
-        val manager = AppWidgetManager.getInstance(context)
+        //first - action_name, second - widgetId
+        val wAction = getIntentTarget(intent)
+        if(wAction.second < 2)return
         when (wAction.first) {
-            UPDATE -> WidgetUtility().updateImmediately(context, wAction.second)
-            UPDATE_SETTINGS -> WidgetUtility().startAutoUpdate(context, wAction.second)
+            UPDATE -> {
+                WidgetUtility().updateImmediately(context, wAction.second)
+            }
+            UPDATE_ON_CLICK -> WidgetUtility().updateImmediately(context, wAction.second)
+            UPDATE_SETTINGS -> {
+
+               // WidgetUtility().updateImmediately(context, wAction.second)
+               // WidgetUtility().startAutoUpdate(context, wAction.second)
+            }
             SET_VALUE -> {
-                currentValue = intent.extras?.getString(KEY_WIDGET_VALUES) ?: "-?-"
-                Log.i(TAG, "Widget onReceive() get  SET_VALUE new value = $currentValue")
+                val manager = AppWidgetManager.getInstance(context)
+                currentValue = intent.extras?.getString(KEY_WIDGET_VALUES) ?: "--"
+                Log.v(TAG, "Widget onReceive() get  SET_VALUE new value = $currentValue")
                 construct(context, manager, wAction.second)
             }
+            DELLETE_WIDG -> onDeleted(context, IntArray(1) { wAction.second })
+                DISABLED_ALL -> onDisabled(context)
             else -> return
         }
     }
 
 
     // ---------------------------------  own fun  --------------------------------------
+
+
+    private fun changeSettings(context: Context,widgetId: Int) {
+    }
+
+
+    private fun logOnReseive(context: Context?, intent: Intent?) {
+        Log.d(
+            TAG,
+            "onReceive() ${if (context == null) "context = null" else if (intent == null) " intent == null" else " get Intent ${intent.toString()} "}"
+        )
+/*        Log.v(TAG, "context ${context.toString()}")
+        Log.v(TAG, "action  ${intent?.action}")
+        val extra = intent?.extras
+        if (extra == null) Log.v(TAG, "Intent has no extras")
+        val widgetId = extra?.getInt(
+            AppWidgetManager.EXTRA_APPWIDGET_ID,
+            AppWidgetManager.INVALID_APPWIDGET_ID
+        )
+        val hasSettings = extra?.getBoolean(SIMPLE_TS_WIDGET_UPDATE)
+        val isUpdate = extra?.getBoolean(UPDATE_ON_CLICK, false)
+        val getValue = extra?.getString(KEY_WIDGET_VALUES) ?: "--"
+        Log.v(
+            TAG,
+            "widgetId $widgetId , hasSettings $hasSettings , isUpdate $isUpdate , getValue $getValue"
+        )*/
+
+    }
+
 
     /*
         parse intent action and extras and return type action for widget
@@ -122,28 +168,44 @@ class SimpleTSWidget : AppWidgetProvider() {
            on some wrong return NO_ACTION
      */
     private fun getIntentTarget(intent: Intent): Pair<String, Int> {
-        var widgetId = -1
-        val extra = intent.extras ?: return Pair(NO_ACTION, 0)
-        widgetId = extra.getInt(
-            AppWidgetManager.EXTRA_APPWIDGET_ID,
-            AppWidgetManager.INVALID_APPWIDGET_ID
-        )
-        if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return Pair(NO_ACTION, 0)
-        // from settings activity return extra with key  SIMPLE_TS_WIDGET_UPDATE
-        val isSetValue = extra.getBoolean(SIMPLE_TS_WIDGET_UPDATE, false)
-        if (isSetValue) return Pair(UPDATE_SETTINGS, widgetId)
-        // click on value in widget -> send intent to self with UPDATE_ACTION parameter
-        val isUpdate = extra.getBoolean(UPDATE_VALUE, false)
-        if (isUpdate || intent.action == "android.appwidget.action.APPWIDGET_UPDATE_OPTIONS") return Pair(
-            UPDATE,
-            widgetId
-        )
-        if (intent.action == "android.appwidget.action.APPWIDGET_UPDATE") return Pair(
-            SET_VALUE,
-            widgetId
-        )
-        Log.w(TAG, "!!! SURPRISE - [ get intent with unable action ]")
-        return Pair(NO_ACTION, -1)
+        var widgetId = 0
+        val extra = intent.extras // ?: return Pair(NO_ACTION,0)
+        if (extra != null) {
+            widgetId = extra.getInt(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID
+            )
+   /*         Log.v(TAG, "EXTRA size ${extra.size()}  toString() [ ${extra.toString()}")
+            for( item in extra.keySet()) Log.v("simplets.EXTRA", "[  key: $item  value ${extra.get(item)}  ]")*/
+            val hasSettings = extra.getBoolean(SIMPLE_TS_WIDGET_UPDATE)
+            if (hasSettings) return Pair(UPDATE_SETTINGS, widgetId)
+            // click on value in widget -> send intent to self with UPDATE_ON_CLICK parameter
+            val isUpdate = extra.getBoolean(UPDATE_ON_CLICK, false)
+            if (isUpdate) return Pair(UPDATE_ON_CLICK, widgetId)
+        }
+        Log.v(TAG, "widgetId=$widgetId action=${intent.action}")
+        val retVal = when (intent.action) {
+            // resize
+            "android.appwidget.action.APPWIDGET_UPDATE_OPTIONS" -> {
+                val action = if(widgetId < 2)NO_ACTION  else UPDATE
+                Pair(action, widgetId)
+            }
+            // click on textView
+            "android.appwidget.action.APPWIDGET_UPDATE" -> {
+                val action = if(widgetId < 2)NO_ACTION else SET_VALUE
+                Pair(action, widgetId)
+            }
+            // on Delete widget
+            "android.appwidget.action.APPWIDGET_DELETED" -> Pair(DELLETE_WIDG, widgetId)
+            // delete all widgets
+            "android.appwidget.action.APPWIDGET_DISABLED" -> Pair(DISABLED_ALL, widgetId)
+            //  some other - not handle
+            else -> {
+                Log.w(TAG, "!!! SURPRISE - [ get intent with unable action ]")
+                Pair(NO_ACTION, 0)
+            }
+        }
+        return retVal
     }
 
     /*
@@ -153,39 +215,43 @@ class SimpleTSWidget : AppWidgetProvider() {
         context: Context,
         widgetId: Int,
         views: RemoteViews,
-        url: String
+        channelId: Long
     ) {
+        Log.v(TAG, "setOnClickForWidget()")
         //  set on click action for config buttom
         val intent1 = Intent(
             context,
-            SimpleTSWidgetConfigureActivity::class.java
+            SimpleTSWidgetConfigureActivity::class.java  // WidgetConfigureActivity::class.java
         )
         //  on click for settings button
         intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+        intent1.putExtra(SIMPLE_TS_WIDGET_UPDATE, true)
         val pIntent1 =
-            PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getActivity(context, widgetId, intent1, PendingIntent.FLAG_UPDATE_CURRENT)
         views.setOnClickPendingIntent(R.id.widget_button_config, pIntent1)
         // set on click for text of value( it start run service directly )
         // изврат, однако - отправить себе intent на себя-же
         val intent2 = Intent(context, SimpleTSWidget::class.java)
         intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        intent2.putExtra(UPDATE_VALUE, true)
+        intent2.putExtra(UPDATE_ON_CLICK, true)
         intent2.setAction("android.appwidget.action.APPWIDGET_UPDATE")
         val pIntent2 = PendingIntent.getBroadcast(
             context,
-            0,
+            widgetId,
             intent2,
-            0
+            PendingIntent.FLAG_CANCEL_CURRENT
         )
         views.setOnClickPendingIntent(R.id.appwidget_value_text, pIntent2)
         //  on click main button
         val intent3 = Intent(context, MainActivity::class.java)
         intent3.putExtra(CALL_FROM_WIDGET, true)
+       //          Log.d(TAG, "put to main activity channelId=$channelId" )
+        intent3.putExtra( CHANNEL_ID, channelId )
         val pIntent3 = PendingIntent.getActivity(
             context,
-            0,
+            widgetId,
             intent3,
-            0
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
         views.setOnClickPendingIntent(R.id.widget_button_main, pIntent3)
     }
@@ -200,9 +266,9 @@ class SimpleTSWidget : AppWidgetProvider() {
     ) {
         val settings = loadWidgetSettingsPref(context, widgetId)
         var isError =
-            if (settings.max == null && settings.min == null || currentValue == "-?-") false
+            if (settings.max == null && settings.min == null || currentValue == "--") false
             else WidgetUtility().actionForThreshold(context, settings, currentValue)
-        Log.d(TAG, "call construct() settings ${settings.asString()}")
+        Log.v(TAG, "call construct() settings ${settings.asString()}")
         val col1 = Color.parseColor(settings.backColor)
         val col2 = Color.parseColor("#40888888")
         val fontCol = if (isError) Color.RED else if (col1 > col2) Color.BLACK else Color.WHITE
@@ -210,7 +276,6 @@ class SimpleTSWidget : AppWidgetProvider() {
             if (fontCol == Color.BLACK) Color.parseColor("#001040") else Color.parseColor("#fffaff")
         // Construct the RemoteViews object
         RemoteViews(context.packageName, R.layout.simple_t_s_widget).also { views ->
-            setOnClickForWidget(context, widgetId, views, settings.reqUrl)
             views.setInt(
                 R.id.widget_root_container,
                 "setBackgroundColor",
@@ -230,8 +295,25 @@ class SimpleTSWidget : AppWidgetProvider() {
             )
             views.setTextColor(R.id.appwidget_name_text, labelCol)
             views.setTextViewText(R.id.appwidget_name_text, settings.fieldName)
+            setOnClickForWidget(context, widgetId, views, computeChannelIdFromURL(settings.reqUrl))
             appWidgetManager.updateAppWidget(widgetId, views)
         }
+    }
+
+    /*
+        get from url channelId substring and convert it in Long
+     */
+    private fun computeChannelIdFromURL(url: String): Long {
+        val res = if (url.length < 2) {
+            0L
+        } else {
+            //  request example :  https://api.thingspeak.com/channels/495353/fields/2.json
+            val start = url.indexOf("channels") + 9
+            val end = url.indexOf("fields") - 1
+            url.substring(start, end).toLong()
+        }
+        Log.v(TAG, "computeChannelFromURL() channelId = $res")
+        return res
     }
 
 
@@ -257,6 +339,9 @@ class SimpleTSWidget : AppWidgetProvider() {
         }
     }
 
+    /*
+    widget background colors
+     */
     enum class Colors(private val argb: Int) {
         BROWN(R.color.brown), WHITE(R.color.white), GREEN(R.color.green), BLUE(R.color.blue),
         YELLOW(R.color.yellow);

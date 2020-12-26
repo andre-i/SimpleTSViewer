@@ -118,7 +118,7 @@ internal class FieldFragmentViewModel : ViewModel() {
             getFields on start execute
      */
     fun getFieldsToShow(): Array<Field> {
-        val fields = dataHandler.getFields()
+        val fields = dataHandler.getFieldsOnCreate()
         var res = emptyArray<Field>()
         var n = 0
         for (item in fields) {

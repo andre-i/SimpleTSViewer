@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/list_margin"
+    android:layout_marginStart="@dimen/list_margin"
     android:layout_marginTop="@dimen/List_margin_top"
-    android:layout_marginBottom="@dimen/list_margin_bottom"
+    android:layout_marginEnd="@dimen/list_margin"
+    android:layout_marginBottom="@dimen/List_margin_top"
     android:background="@drawable/list_rounded_background"
     android:paddingTop="@dimen/List_margin_top"
     android:paddingBottom="@dimen/List_margin_top">
@@ -16,7 +17,6 @@
         android:id="@+id/field_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/button_margin_horisontal"
         android:layout_marginTop="@dimen/list_margin"
         android:background="@drawable/rounded_corner"
         android:padding="@dimen/list_padding"
@@ -24,14 +24,32 @@
         android:textColor="@color/field_foreground"
         android:textSize="@dimen/header_text_size"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--  @android:style/Widget.ImageButton
+        app:layout_constraintStart_toEndOf="@+id/field_name"
+    -->
+
+    <ImageButton
+        android:id="@+id/field_chart_button"
+        style="@android:style/Widget.ImageButton"
+        android:layout_width="46dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="@dimen/List_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/field_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_chart_button" />
 
     <TextView
         android:id="@+id/field_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/list_margin"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="@dimen/button_margin_horisontal"
         android:layout_marginBottom="@dimen/list_margin"
         android:background="@drawable/rounded_corner"

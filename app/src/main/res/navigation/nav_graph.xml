@@ -18,6 +18,11 @@
         android:id="@+id/action_to_Fields"
         app:destination="@+id/FieldsFragment" />
 
+    <action
+        android:id="@+id/action_to_Chart"
+        app:destination="@+id/ChartFragment" />
+
+
 <!--   FRAGMENTS   -->
 
     <fragment
@@ -69,6 +74,20 @@
         <action
             android:id="@+id/action_PropsChannel_to_Channels"
             app:destination="@+id/ShowChannelFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ChartFragment"
+        android:name="com.bezwolos.simplets.chart.ChartFragment"
+        android:label="work with chart"
+        tools:layout="@layout/fragment_chart" >
+
+        <action
+            android:id="@+id/action_Chart_to_Channels"
+            app:destination="@+id/ShowChannelFragment" />
+        <action
+            android:id="@+id/action_Chart_to_Fields"
+            app:destination="@+id/FieldsFragment" />
     </fragment>
 
 

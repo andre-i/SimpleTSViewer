@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.bezwolos.simplets.chart.CHANNEL_ID
 import com.bezwolos.simplets.data.DataHandler
 import com.bezwolos.simplets.show.create.PropsChannelFragment
 import com.bezwolos.simplets.show.fields.FieldsFragment
@@ -45,8 +46,9 @@ internal class MainActivity : AppCompatActivity() {
         if(savedInstanceState?.getBoolean(IS_RESTART) == null){
             val isFromWidget = intent.extras?.getBoolean(CALL_FROM_WIDGET, false) ?: false
             if(isFromWidget){
-                Log.i(TAG, "start activity FROM WIDGET")
-                showListChannelsFragment()
+                val id = intent.extras?.getLong(CHANNEL_ID) ?: 0L
+                Log.i(TAG, "start activity FROM WIDGET channelId=$id")
+                showChannelFromWidget(id)
             }else{
                 onStartAction()
             }
@@ -160,7 +162,7 @@ internal class MainActivity : AppCompatActivity() {
 
 
     fun showDialog() {
-        val channIdView = LayoutInflater.from(this).inflate(R.layout.add_channel_dialog, null)
+        val channIdView = LayoutInflater.from(this).inflate(R.layout.dialog_add_channel, null)
         val mBuilder = AlertDialog.Builder(this)
             .setView(channIdView)
             .setTitle(resources.getString(R.string.enter_channel_id))
@@ -172,7 +174,7 @@ internal class MainActivity : AppCompatActivity() {
             Log.i(TAG, "add channel ID=$channelId   KEY=$apiKey ")
             dialog.dismiss()
             GlobalScope.launch(Dispatchers.IO) {
-                (application as MyApp).getDataHandler().getFields(channelId, apiKey)
+                (application as MyApp).getDataHandler().getFieldsOnCreate(channelId, apiKey)
                 val error = dHandler.getLastError()
                 GlobalScope.launch(Dispatchers.Main) {
                     if (error.length > 1) {
@@ -197,7 +199,8 @@ internal class MainActivity : AppCompatActivity() {
 
     }
 
-    //  ===================   set main Activity action bar title  ========================== */
+    /*  ===================   set main Activity action bar title  ========================== */
+    /*  ============================== from any ============================================ */
 
     fun setTitleInActionBar(newTitle: String) {
         title = newTitle
@@ -210,4 +213,23 @@ internal class MainActivity : AppCompatActivity() {
             setTitleInActionBar(title)
         }
     }
+
+    /*  =========================  on start from widget action  ================================ */
+
+    /*
+        launch get data from channel and show result
+        if channelId == 0 call default actions for start application
+     */
+    private fun showChannelFromWidget(channelId : Long){
+        Log.v(TAG, "try start from fidget with channelId=$channelId")
+        // for empty channel( it can`t be , but ??? )
+        if(channelId == 0L)onStartAction()
+        GlobalScope.launch(Dispatchers.IO) {
+            dHandler.updateFieldsFromTS(channelId)
+            GlobalScope.launch(Dispatchers.Main) {
+                showCheckedChannel()
+            }
+        }
+    }
+
 }
