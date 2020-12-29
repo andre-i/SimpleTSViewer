@@ -24,6 +24,9 @@ internal const val EMPTY_ANSWER = 4
 class ChartDataHandler {
     private val TAG = "simplets.ChartHnd"
 
+    /*
+      on choose period action
+     */
     suspend fun getResultsForPeriod(channel: Channel, fieldId: String, startDate : String, endDate : String, medianValue : Int): Pair<Array<TSResult>, Int>{
         Log.v(TAG, "results for channel parameters : channel [ $channel ] , start $startDate end $endDate median = $medianValue")
         val key = if (channel.readTSKey.length != 16) "?" else "?api_key=${channel.readTSKey}&"
@@ -36,20 +39,31 @@ class ChartDataHandler {
         return getData(request)
     }
 
+    /*
+        on choose spinner(hours or days) item action
+     */
     suspend fun getLastResults(channel: Channel, fieldId: String, itemCount : Int, isDays : Boolean) : Pair<Array<TSResult>, Int>{
         Log.v(TAG, "get request for channel = [ ${channel} ] , count=$itemCount , isDays=$isDays ")
         val key = if (channel.readTSKey.length != 16) "?" else "?api_key=${channel.readTSKey}&"
-        val count = if(isDays) "days=${itemCount}" else "minutes=${itemCount * 60}"
+        val intervalCount = if(isDays) "days=${itemCount}" else "minutes=${itemCount * 60}"
         val median = "median=${getMedianTime(itemCount, isDays)}"
         val request = "${channel.protocolName}://api.thingspeak.com/channels/${channel.channelId}/fields/${fieldId[5]}.json" +
-                "${key}$count&${median}&round=2"
+                "${key}$intervalCount&${median}&round=2"
         Log.v(TAG, "request [ $request ]")
         return getData(request)
     }
 
     /*
+        on choose watch action
+     */
+    suspend fun getForWatch(url: String) : Pair<Array<DataPoint>, Int>{
+        val res = getData(url)
+        return Pair(getOnlyValues(res.first), res.second)
+    }
+
+    /*
      return minutes count for requested period
-      this time dpend from value of hours or days
+      this time depend from value of hours or days
      */
     private fun getMedianTime(count : Int, isDays : Boolean) : Int {
         if(isDays){

@@ -128,4 +128,5 @@
     <string name="chooser_start_date_button_text">Start</string>
     <string name="choose_wrong_date">Choose wrong date value</string>
     <string name="chart_on_empty_mess">Get empty data. May be choosed wrong interval.</string>
+    <string name="wrong_on_null">Gotten values contains \\\"null\\\". It dropped.</string>
 </resources>

@@ -21,6 +21,9 @@ class ChartViewModel(): ViewModel() , PeriodChooser.PeriodChooserListener{
     //  VERY useful
     private var isSpinnerDelay = true
 
+    // watch to channel
+    private var isWatch = false
+
     private var test : String? = null
     private lateinit var channel: Channel
     private lateinit var field: Field
@@ -45,17 +48,6 @@ class ChartViewModel(): ViewModel() , PeriodChooser.PeriodChooserListener{
         return chartData // as LiveData<Pair<Array<DataPoint>, Int>>
     }
 
-    /*
-try send to server request and set gotten data for show diagramm
- */
-    fun handleUserChoose(count: Int, isDays: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.v(TAG, "handleuserChoose() - call handler for get chart data")
-            val data = chartDataHandler.getLastResults(channel,field.fieldId,count,isDays)
-
-            setData(Pair(chartDataHandler.getOnlyValues(data.first), data.second))
-        }
-    }
 
     fun setStartParameters( _context : Context, _channel: Channel, _field: Field){
        if( test == null){
@@ -100,14 +92,53 @@ try send to server request and set gotten data for show diagramm
     }
 
     /*
+    handle action on spinner changed
+try send to server request and set gotten data for show diagramm
+ */
+    fun handleUserChoose(count: Int, isDays: Boolean) {
+        isWatch = false
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.v(TAG, "handleuserChoose() - call handler for get chart data")
+            val data = chartDataHandler.getLastResults(channel,field.fieldId,count,isDays)
+
+            setData(Pair(chartDataHandler.getOnlyValues(data.first), data.second))
+        }
+    }
+
+    /*
         listener for period chooser
      */
     override fun onPeriodChoose(start: String, end: String, median: Int) {
+        isWatch = false
         viewModelScope.launch(Dispatchers.IO) {
             Log.v(TAG, "onPeriodChoose get start:$start , end:$end , median=$median")
             val data = chartDataHandler.getResultsForPeriod(channel,field.fieldId, start, end, median)
             setData(Pair(chartDataHandler.getOnlyValues(data.first), data.second))
         }
+    }
+
+    fun startWatch() : Boolean {
+        Log.v(TAG, "Start watch")
+        if(channel.requestFrequency < 1){
+            Log.d(TAG, "return on wrong watch value")
+            return false
+        }
+        isWatch = true
+        val delay = channel.requestFrequency*1000L
+        val key = if (channel.readTSKey.length != 16) "?" else "?api_key=${channel.readTSKey}&"
+        val req = "${channel.protocolName}://api.thingspeak.com/channels/${channel.channelId}/fields/${field.fieldId[5]}.json" +
+        "${key}results=20&round=2"
+        var res = Pair(arrayOf(DataPoint(0.0, 0.0)), EMPTY_ANSWER)
+        viewModelScope.launch(Dispatchers.IO){
+            while(isWatch){
+                delay(delay)
+                if(isWatch == false)return@launch
+                res = chartDataHandler.getForWatch(req)
+                if(res.second == EMPTY_ANSWER)isWatch = false
+                setData(res)
+            }
+        }
+        return true
     }
 
 }

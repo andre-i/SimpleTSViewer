@@ -3,9 +3,7 @@ package com.bezwolos.simplets.chart
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -15,7 +13,6 @@ import com.bezwolos.simplets.MyApp
 import com.bezwolos.simplets.R
 import com.bezwolos.simplets.data.Channel
 import com.bezwolos.simplets.data.Field
-import com.bezwolos.simplets.data.TSResult
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.LegendRenderer
@@ -23,7 +20,6 @@ import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.concurrent.fixedRateTimer
 
 
 // the fragment initialization parameters
@@ -40,8 +36,12 @@ internal const val FIELD_ID = "fieldId"
 class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val TAG = "simplets.ChartFrg"
 
-    // chartDataHandler
+    // chart
     private val chartDataHandler = ChartDataHandler()
+    private val series: LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(arrayOf(DataPoint(0.0,0.0)))
+    //  use for compute x-axis point count
+    private var pointsSize = 1
+
 
     // viewModel
     private lateinit var viewModel: ChartViewModel
@@ -61,10 +61,11 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val DAYS = true
 
     // freeze for wait
-    private var isHandleRequest = false
+    //private var isHandleRequest = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true);
         var channelId = 0L
         var fieldId = ""
         arguments?.let {
@@ -79,37 +80,6 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
         )
     }
 
-    /*
-     set values for channel and field (get channel and field from database) construct title
-     */
-    private fun setParam(channelId: Long, fieldId: String) {
-        Log.d(TAG, "onCreate()")
-        isReady = false
-        lifecycleScope.launch(Dispatchers.IO) {
-            val db = (context?.applicationContext as MyApp).getDataBase()
-            val channel = db.channelsDao.getChannel(channelId) ?: Channel(channelId)
-            val field = db.fieldsDao.getField(channelId, fieldId) ?: Field(channel.channelId, "")
-            if (field.fieldId == "") {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    // on some Wrong
-                    showWrong("ERROR: wrong Channel id or field")
-                    isReady = true
-                    findNavController().navigate(R.id.action_to_Channels)
-                }
-            } else {
-                viewModel.setStartParameters(requireContext(), channel, field)
-                chartData = viewModel.getData()
-                lifecycleScope.launch(Dispatchers.Main) {
-                    setLabels()
-                    //  isReady = false
-
-                    //  isReady = true
-                }
-            }
-
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -120,9 +90,7 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
         //  views
         periodButton = view.findViewById(R.id.chart_period_button)
         periodButton.setOnClickListener {
-            val periodChooser = PeriodChooser()
-            periodChooser.setOnPeriodChooseListener(viewModel as PeriodChooser.PeriodChooserListener)
-            this!!.fragmentManager?.let { it1 -> periodChooser.show(it1, "periodChooser") }
+            onClickForPeriod(it)
         }
         graphView = view.findViewById(R.id.graph)
         hourSpinner = view.findViewById(R.id.chart_hour_spinner)
@@ -136,22 +104,21 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
         return view
     }
 
-    private fun setLabels() {
-        Log.d(TAG, "Set labels")
-        // set labels
-        (activity as MainActivity).setTitleInActionBar(
-            R.string.chart_fragment_title,
-            viewModel.getChannelName()
-        )
-        view?.findViewById<TextView>(R.id.chart_name)
-            ?.setText(
-                resources.getString(
-                    R.string.chart_name_label,
-                    viewModel.getFieldDescription()
-                )
-            )
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.show_watch_menu,menu)
+        return super.onCreateOptionsMenu(menu, inflater)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.flip_watch) {
+            if(viewModel.startWatch() == false){
+                showWrong(resources?.getString(R.string.wrong_watch))
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     companion object {
         /**
@@ -196,13 +163,7 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         // if in it time handle request - do nothing
         if (viewModel.isSpinnerDelay()) return
-        if (isHandleRequest == true) {
-            Log.v(TAG, "device is Busy - do nothing")
-            return
-        }
-        isHandleRequest = true
-        hourSpinner.setEnabled(false)
-        daySpinner.setEnabled(false)
+        hasActionsEnabled(false)
         // handle change values
         when (parent.id) {
             //  hour spinner handler
@@ -228,9 +189,6 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 viewModel.handleUserChoose(days, DAYS)
             }
         }
-        isHandleRequest = false
-        hourSpinner.setEnabled(true)
-        daySpinner.setEnabled(true)
     }
 
 
@@ -241,17 +199,86 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
         Toast.makeText(context, mess, Toast.LENGTH_LONG).show()
 
 
+    private fun onClickForPeriod(it: View?) {
+        hasActionsEnabled(false)
+        val periodChooser = PeriodChooser()
+        periodChooser.setOnPeriodChooseListener(viewModel as PeriodChooser.PeriodChooserListener)
+        this!!.fragmentManager?.let { it1 -> periodChooser.show(it1, "periodChooser") }
+    }
+
+
+    private fun hasActionsEnabled(isClickable : Boolean){
+        periodButton.setEnabled(isClickable)
+        hourSpinner.setEnabled(isClickable)
+        daySpinner.setEnabled(isClickable)
+    }
+
+    /*
+ set values for channel and field (get channel and field from database) construct title
+ */
+    private fun setParam(channelId: Long, fieldId: String) {
+        Log.d(TAG, "onCreate()")
+        isReady = false
+        lifecycleScope.launch(Dispatchers.IO) {
+            val db = (context?.applicationContext as MyApp).getDataBase()
+            val channel = db.channelsDao.getChannel(channelId) ?: Channel(channelId)
+            val field = db.fieldsDao.getField(channelId, fieldId) ?: Field(channel.channelId, "")
+            if (field.fieldId == "") {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    // on some Wrong
+                    showWrong("ERROR: wrong Channel id or field")
+                    isReady = true
+                    findNavController().navigate(R.id.action_to_Channels)
+                }
+            } else {
+                viewModel.setStartParameters(requireContext(), channel, field)
+                chartData = viewModel.getData()
+                lifecycleScope.launch(Dispatchers.Main) {
+                    setLabels()
+                    //  isReady = false
+
+                    //  isReady = true
+                }
+            }
+
+        }
+    }
+
+    private fun setLabels() {
+        Log.d(TAG, "Set labels")
+        // set labels
+        (activity as MainActivity).setTitleInActionBar(
+            R.string.chart_fragment_title,
+            viewModel.getChannelName()
+        )
+        view?.findViewById<TextView>(R.id.chart_name)
+            ?.setText(
+                resources.getString(
+                    R.string.chart_name_label,
+                    viewModel.getFieldDescription()
+                )
+            )
+    }
+
+
     /*
     draw chart with only values
      */
     private fun drawSimpleChart(points: Array<DataPoint>, hasResult: Int) {
-        Log.d(
+        Log.v(
             TAG,
             "call Draw Chart with points size=${points.size}  request result=$hasResult"
         )
-        graphView.removeAllSeries()
-        prepareCanvas(graphView, points)
-        val series: LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(points)
+        // make enabled actions on click
+        hasActionsEnabled(true)
+        graphView.getLegendRenderer().setVisible(false)
+        // on first cll add series
+        if(graphView.series.size < 1) graphView.addSeries(series)
+        // for arrays with equals size can`t recompute x-axis values
+        if(pointsSize != points.size) {
+            pointsSize = points.size
+            prepareCanvas(points)
+        }
         // if thingspeak send null for some values - create warning for user(we can`t show it)
         val chartColor = when (hasResult) {
             //  some  wrong witch data handle
@@ -260,8 +287,13 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 return
             }
             WRONG_VALUE -> {
-                showWrong(context?.getString(R.string.wrong_data_format).toString())
-                return
+                showWrong(context?.getString(R.string.wrong_on_null).toString())
+                graphView.getLegendRenderer().setVisible(true)
+                graphView.getLegendRenderer().backgroundColor = Color.WHITE
+                graphView.getLegendRenderer().textColor = Color.RED
+                graphView.getLegendRenderer().align = LegendRenderer.LegendAlign.TOP
+                series.setTitle(resources.getString(R.string.chart_drop_null))
+                resources.getColor(R.color.chart_with_wrong)
             }
             EMPTY_ANSWER -> {
                // Log.v(TAG, " show message on Empty answer -")
@@ -273,31 +305,26 @@ class ChartFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 resources.getColor(R.color.chart_normal_color)
             }
             else -> {
-                graphView.getLegendRenderer().setVisible(true)
-                graphView.getLegendRenderer().backgroundColor = Color.WHITE
-                graphView.getLegendRenderer().textColor = Color.RED
-                graphView.getLegendRenderer().align = LegendRenderer.LegendAlign.TOP
-                series.setTitle(resources.getString(R.string.chart_drop_null))
-                resources.getColor(R.color.chart_with_wrong)
+                showWrong("returned WRONG_CODE !!! $hasResult")
+                return
             }
         }
         series.color = chartColor
         series.thickness = 4
         series.isDrawDataPoints = true
         series.dataPointsRadius = 4F
-        graphView.addSeries(series)
+        series.resetData(points)
     }
 
     /*
     prepare graphView for draw
      */
-    private fun prepareCanvas(graphView: GraphView, points: Array<DataPoint>) {
-        graphView.getLegendRenderer().setVisible(false)
+    private fun prepareCanvas(points: Array<DataPoint>) {
         // can`t set label for x-axis
         graphView.getGridLabelRenderer().setLabelFormatter(MyFormatter())
         // compute values for x axis and prepare viewport
         graphView.getViewport().setXAxisBoundsManual(true)
-        graphView.getViewport().setMinX(0.0)
+        graphView.getViewport().setMinX(-1.0)
         val maxX = points[points.size - 1].x
         graphView.getViewport().setMaxX(maxX + maxX / 20)
         graphView.getViewport().setScrollable(true)

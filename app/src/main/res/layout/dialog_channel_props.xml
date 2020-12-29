@@ -123,10 +123,12 @@
         android:id="@+id/channel_request_frequency_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/list_margin"
+        android:layout_marginBottom="@dimen/List_margin_top"
         android:inputType="number"
-        android:padding="@dimen/list_padding"
+        android:paddingTop="6dp"
+        android:paddingBottom="10dp"
         android:textSize="@dimen/label_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/space2"
         app:layout_constraintStart_toEndOf="@+id/space"
         app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_label" />
@@ -137,34 +139,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_label" />
-
-    <Button
-        android:id="@+id/channel_button_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
-        android:layout_marginEnd="@dimen/vertical_margin"
-        android:layout_marginBottom="@dimen/vertical_margin"
-        android:background="@drawable/button_rounded_simple"
-        android:text="@string/ok_label"
-        android:textSize="@dimen/label_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_value" />
-
-    <Button
-        android:id="@+id/channel_button_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
-        android:layout_marginEnd="@dimen/vertical_margin"
-        android:layout_marginBottom="@dimen/vertical_margin"
-        android:background="@drawable/button_rounded_warning"
-        android:text="@string/cancel_label"
-        android:textSize="@dimen/label_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/channel_button_ok"
-        app:layout_constraintTop_toBottomOf="@+id/channel_request_frequency_value" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

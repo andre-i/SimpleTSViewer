@@ -74,4 +74,5 @@
     <string name="chooser_end_date_button_text">Окончание</string>
     <string name="choose_wrong_date">Выбрано неверное значение даты</string>
     <string name="chart_on_empty_mess">Получен пустой ответ. Возможно выбран неверный интервал.</string>
+    <string name="wrong_on_null">Есть \\\"null\\\" такие значения пропущены</string>
 </resources>

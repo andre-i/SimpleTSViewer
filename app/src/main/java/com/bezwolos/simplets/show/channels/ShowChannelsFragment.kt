@@ -73,7 +73,6 @@ internal class ShowChannelsFragment : Fragment(), ChannelsActionListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-       // inflater.inflate(R.menu.show_chart_menu,menu)
         inflater.inflate(R.menu.show_channel_menu, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }

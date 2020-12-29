@@ -79,7 +79,7 @@ internal class PropsChannelFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d(TAG, "Click on menuItem")
-        if (item.itemId == R.id.save_channel_item){
+        if (item.itemId == R.id.save_channel_item) {
             Log.d(TAG, "click on SAVE item")
             hideKeyboard(idLabel)
             makeOnSaveAction()
@@ -125,7 +125,7 @@ internal class PropsChannelFragment : Fragment() {
         const val ARG_CHANNEL_API_KEY = "TS_read_key"
 
         @JvmStatic
-        fun newInstance(columnCount: Int, channelId: Long, apiKey : String = "") =
+        fun newInstance(columnCount: Int, channelId: Long, apiKey: String = "") =
             PropsChannelFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
@@ -178,16 +178,16 @@ internal class PropsChannelFragment : Fragment() {
             AlertDialog.Builder(it)
                 .setView(view)
                 .setTitle(title)
-        }
-        val dialog = mBuilder?.show()
-        view.findViewById<Button>(R.id.channel_button_ok).setOnClickListener {
-            fillChannelPropsFromDialog(view, channel)
-            dialog?.dismiss()
-        }
-        view.findViewById<Button>(R.id.channel_button_cancel).setOnClickListener {
-            dialog?.dismiss()
-            showChannelFragment()
-        }
+                .setPositiveButton(R.string.ok_label) { dialog, id ->
+                    fillChannelPropsFromDialog(view, channel)
+                    dialog.dismiss()
+                }
+                .setNegativeButton(R.string.cancel_label) { dialog, id ->
+                    dialog.dismiss()
+                    showChannelFragment()
+
+                }
+        }?.show()
     }
 
     /*
@@ -215,8 +215,8 @@ internal class PropsChannelFragment : Fragment() {
         channel.protocolName = proto
         // request frequency
         val freq = view.findViewById<EditText>(R.id.channel_request_frequency_value).text.toString()
-        val time = if(freq.length<1) 0L else freq.toLong()
-        channel.requestFrequency = if (time < 5) 5L else time
+        val time = if (freq.length < 1) 2L else freq.toLong()
+        channel.requestFrequency = if (time < 1) 2L else if (time > 300) 300L else time
         Log.d(TAG, "on close channel dialog values [ ${channel.toString()}]")
         viewModel.setChannel(channel)
     }
@@ -281,10 +281,10 @@ internal class PropsChannelFragment : Fragment() {
      */
     private fun makeOnSaveAction() {
         // get RECYCLER_VIEW
-        val v =view?.findViewById<RecyclerView>(R.id.fields_list)
-        if( v != null){
+        val v = view?.findViewById<RecyclerView>(R.id.fields_list)
+        if (v != null) {
             recyclerView = v
-            val curFields =(v.adapter as AddChannelRecyclerViewAdapter).getCurrentFields()
+            val curFields = (v.adapter as AddChannelRecyclerViewAdapter).getCurrentFields()
             createDialog(createQuestMessqge(viewModel.getChannel(), curFields))
         }
     }
