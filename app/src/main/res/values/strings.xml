@@ -2,7 +2,9 @@
     <string name="app_name">SimpleTS</string>
     <!--       -->
     <string name="help">Show help</string>
-    <string name="help_content">For add the new channel from Thingspeak site you must tap on menu and choose \"Add channel \" item.\nAfter it be show the screen for add channel. Simple go on.</string>
+    <string name="help_content">
+        For add the new channel from Thingspeak site you must tap on menu and choose \"Add channel \" item.
+        \nAfter it be show the screen for add channel. Simple go on.</string>
     <!--  channels  -->
     <string name="channel_id_label" translatable="false">"  ID: "</string>
     <string name="channels">Channels</string>

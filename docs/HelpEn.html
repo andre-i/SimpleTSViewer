@@ -1,5 +1,10 @@
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+
+    <title>SimpleTS help</title>
+    <meta name="description" content="How to for SimpleTS">
+    <meta name="author" content="Bezwolos@mail.ru">
     <style>
             .center{ text-align: center ; color: #204590 }
             ul{align-content: center; color: #202060}
@@ -8,93 +13,166 @@
                padding: 5px;
                vertical-align: top;
                }
+
+
     </style>
 </head>
 <body>
-<h2 class="center"> SimpleTSViewer </h2>
-Simple, very simple! viewer for thingspeak channels.
+<h2>About SimpleTS</h2>
+<h4>Purpose - get data from ThingSpeak.com and show it</h4>
+<h3 align="center">Capabilities</h3>
+<div> It have 2 variants - application and widget/</div>
+<ul>
+    <li>
+        <ul><b>Application:</b>
+            <li>Show last data from the channels. May set for show checked fields
+            <li>May set several at the same time. Show only one channel at same time
+            <li>Choose data for show:<u>
+                <ol>
+                    <li>Set channel name.
+                    <li>Set label for field.
+                    <li>Set measure unit
+                </ol>
+            </u>&nbsp; &nbsp;It may be done on create new channel connect .
+            <li>Application  create chart for last days, hours or checked interval(in days).
+        </ul>
+    </li>
+    <li>
+        <ul><b>Widget:</b>
+            <li>Show one field from channel. Field name and measure unit get from the channels settings.
+            <li>Widget count bay be any.
+            <li>Widget settings:
+                <ol>
+                    <li>View - font size and background color.
+                    <li>Update frequency( from 15 to 120 minutes ).
+                    <li>Create notifications on out from bounds.
+                </ol>
+            <li>Open main screen application for same channel
+        </ul>
+    </li>
+    <u>Note:<i>Widget may be create only after create channel.</i></u>
+</ul>
 <table>
     <tr>
-        <td width="50%">
-            <ul><h4 align="center">Properties:</h4>
-                <li>Support only open channels.</li>
-                <li>Support show many channels, however show at one time only one channel.</li>
-                <li>
-                    Tune fields from channel for show( can be set field name, 
-                    it measure unit, user decides what to show)
-                </li>
-                <li>May set autoupdate mode</li>
-            </ul>
-        </td>
+        <td width="20%"></td>
+        <td width="30%"></td>
+        <td width="20%"></td>
+        <td width="30%"></td>
         <td></td>
     </tr>
-</table>
-<table>
-    <tr><td width="20%"> </td><td width="30%"> </td><td width="20%"> </td><td width="30%"> </td></tr>
     <tr>
-        <td><img src="/SimpleTSViewer/screens/menu.png" alt="Menu "/></td>
+        <td><img src="./screens/addChannelDialog.png" alt="Menu "/></td>
         <td>
-            First time the "add channel" confirm appears automatically. You can add next channel
-            use "Add channel" menu item. For it go <b>menu -> Channels</b> after go <b>menu -> Add
-            channel</b>
-
+            On first start the create dialog be appear automatically. After may create channel from
+            channels screen in add channel menu.
         </td>
-        <td><img src="/SimpleTSViewer/screens/addChannelScreen.png" alt="add channel screen"/></td>
-        <td>Inside "Add channel" confirm must set channelID. It may see about top Thingspeak channel
-            page.
-            It is some number.
-            <br><b>Note :</b> Viewer work <u>only open</u> channel. Private channel cannot appear in
-            this viewer.
+        <td>
+            <img src="./screens/channelSettings_1.png"
+                 alt="first part add channel"/>
+        </td>
+        <td>
+            Second step - fill channel settings.
+            <ol>
+                <li>
+                    Channel name and api key. Key fill <b>only for private fields</b>. In other case
+                    it is can`t mandatory.
+                </li>
+                <li>
+                    Update frequency - set for show real time diagram. Set from 2seconds to infinity.
+                    Open channel support from 15 seconds.
+                </li>
+                <li>
+                    Proto http or https. Http faster. Https secured.
+                </li>
+            </ol>
         </td>
     </tr>
     <tr>
-        <td><img src="/SimpleTSViewer/screens/channelProperties.png" alt="channel properties"/></td>
-        <td>
-            Next step - fill the channel properties. On top screen be channel name and autoupdate
-            frequency. Nearby
-            it set "done" button(Yellow). For "Name" and "Request frequency" must end witch caret
-            return.
-            Below is properties fields of channel. They contains:
+        <td><img src="./screens/channelSettings_2.png" alt="fields properties"/>
+        </td>
+        <td>For field in channel good action is set: field name, measure unit.
+            Checkbox set for show field, otherwise field can`t show.
+            Press on Ok button leave to hide this field - may get for next.
+            If can`t press field properties be showed
             <ul>
-                <li>field name - label for field</li>
-                <li>measure unit - label for field value</li>
-                <li>checkbox - whether show field(Default value checkbox is checked)</li>
+                <li>Name - field label.
+                </li>
+                <li>Measure unit label for value(meter. mm Hg and etc.</li>
+                <li>Checkbox by default is set(field show)</li>
             </ul>
+            <em>After fill all fields tap on check on action bar</em> (see picture)<br>
         </td>
-        <td><img src="/SimpleTSViewer/screens/afterFill.png" alt="channel properties after fill fields"/></td>
+        <td><img src="./screens/saveSettings.png" alt="on save settings"/></td>
         <td>
-            All properties cannot mandatory, but how to understand what I see? After fill the
-            properties in field
-            must press on "ok" button. Otherwise Your values cannot saved. Filled fields to be hide.
-            On end process
-            press to done button(Yellow on top screen)
+            In save dialog check values and press Ok if good. Otherwise press cancel and fill
+            all yet another time.
+        </td>
+    </tr>
+    <tr><td colspan="3">
+        If success - go to channels screen. There may  edit, see and delete channel.
+    </td></tr>
+    <tr>
+        <td><img src="./screens/showFields.png" alt="fields screen"/></td>
+        <td>
+            <b>Fields screen</b> - show last values.
+            Tap on chart picture - go to chart screen for this field.
+        </td>
+        <td><img src="./screens/chart.png" alt="Экран диаграмм"/></td>
+        <td>
+            Period must have start date - in this case be show only one day chart from 00:00:00 to 23:59:59<br>
+            If set start and end date - show chart for period(edges include). If one date - start or end is broken( channel
+            can`t create and etc) - chart be empty
         </td>
     </tr>
     <tr>
-        <td><img src="/SimpleTSViewer/screens/saveConfirm.png" alt="on save confirm dialog"/></td>
         <td>
-            Press on button leave to next confirm - save channel properties. Read gotten values and
-            if it is Ok -
-            press on "ok" button. Otherwise press to "Cancel" and you return back for change values.
+            <img src="./screens/chartWithDiagram.png" alt="Chart" />
         </td>
-        <td><img src="/SimpleTSViewer/screens/channelsList.png" alt="Channel list"/></td>
-        <td>In order to see channel go to <b>menu -> Channels</b>b and press on "Show" button.</td>
+        <td>
+            <u>Chart example</u>. Tap on watch icon - show real time chart. It work if set update
+                time for channel. If time not set, then go to channels screen and edit channel settings.
+        </td>
+        <td>
+            <img src="./screens/before.png"  alt="Launch icon"/>
+        </td>
+        <td>Launch icon for application.</td>
     </tr>
     <tr>
-        <td><img src="/SimpleTSViewer/screens/channelNoWatch.png" alt="No watch view for channel"/></td>
         <td>
-            This picture show how be appear channel values. Picture reflect no watched channel. All
-            values in this
-            case be get only 1 times. For watch channel need have "Request frequency > 15 seconds(
-            small values cannot
-            support Thingspeak site) and press on "watch" button it is nearby top screen
+            <img src="./screens/widgetInScreen.png" alt="Widget on screen" />
         </td>
-        <td><img src="/SimpleTSViewer/screens/channelWatch.png" alt="watch view for channel"/></td>
-        <td>
-            If watch mode be success - pictures on button made changed.
+        <td colspan="3">
+            <table>
+                <tr>
+                    <td>
+                        <img src="./screens/myMeasurer.svg" alt="app icon" width="100" height="80"/>
+                    </td>
+                    <td>
+                        Widget have same icon as application. For create - check it. On start be show settings dialog
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <img src="./screens/widgetOnly.png" alt="только виджет" width="50%"/>
+                    </td>
+                    <td>
+                        For remake widget tap on wrench icon.<br> For open main screen application - tap on eye icon.
+                    </td>
+                </tr>
+            </table>
         </td>
+    </tr>
+    <tr>
+        <td><img src="./screens/withMenu.png"></td>
+        <td><img src="./screens/channelsList.png"></td>
+        <td><img src="./screens/widgetChooser.png"></td>
+        <td><img src="./screens/widgetSettings.png"></td>
     </tr>
 </table>
-<hr width="80%"/>
+
+
+<!-- script src="js/scripts.js"></script -->
 </body>
 </html>

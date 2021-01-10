@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 264">
+	<defs>
+		<style>.cls-1{fill:#1d75b8;}.cls-2{fill:#2d3e50;}</style>
+	</defs>
+	<circle cx="128" cy="128" r="126" fill="#012030" />
+	<circle cx="128" cy="128" r="110" fill="#bff0fc" />
+	<line x1="63" y1="96" x2="94" y2="36" stroke="#dafff0" stroke-width="10.8"/>
+	<circle cx="128" cy="160" r="40" fill="#050510" />
+	<circle cx="128" cy="160" r="35" fill="#dedede" />
+	<path fill="#707080" stroke="#050607" stroke-width="2" d="M95,148 L60,80 L128,160z"/>
+	<path fill="#304040" stroke="#070605" stroke-width="2" d="M118,125 L60,80 L128,160z"/>
+	<circle cx="126" cy="160" r="12" fill="#f0fafa" />
+	<circle cx="38" cy="160" r="7" fill="#808080" />
+	<circle cx="220" cy="160" r="7" fill="#808080" />	
+	<circle cx="128" cy="36" r="7" fill="#808080" />
+	<circle cx="67" cy="60" r="7" fill="#808080" />
+	<circle cx="189" cy="60" r="7" fill="#808080" />
+	<circle cx="39" cy="105" r="7" fill="#808080" />
+	<circle cx="217" cy="105" r="7" fill="#808080" />
+	<path fill="#101530" stroke="#101020" stroke-width="10" 
+		d="M46,216 L4,248 L4,256 L252,256 L252,248 L210,216 z"/>
+</svg>

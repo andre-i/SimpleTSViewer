@@ -28,11 +28,18 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/help_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/help_content" />
 
+            <!--EditText
+                android:id="@+id/help_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Name" / -->
         </LinearLayout>
     </ScrollView>
 
